@@ -1,0 +1,30 @@
+@model Domain.AdSpaceInPreset
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>AdSpaceInPreset</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AdSpace)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AdSpace.RefToImage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Preset)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Preset.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.AdSpaceInPresetId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

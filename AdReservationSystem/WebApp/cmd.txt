@@ -1,0 +1,19 @@
+﻿Main entities:
+
+dotnet aspnet-codegenerator controller -m AdDesign -name AdDesignController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m AdSpace -name AdSpaceController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m AdSpacePrice -name AdSpacePriceController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m AdSpaceType -name AdSpaceTypeController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m Carrier -name CarrierController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m CarrierType -name CarrierTypeController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m Preset -name PresetController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m PresetType -name PresetTypeController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m Reservation -name ReservationController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+
+
+Inbetween enitites:
+
+dotnet aspnet-codegenerator controller -m AdDesignInReservation -name AdDesignInReservationController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m AdSpaceInPreset -name AdSpaceInPresetController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m AdSpaceInReservation -name AdSpaceInReservationController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -m UsersPreset -name UsersPresetController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries
