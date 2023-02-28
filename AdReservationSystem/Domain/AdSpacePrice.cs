@@ -19,5 +19,5 @@ public class AdSpacePrice
     [ForeignKey("AdSpaceId")]
     public Guid AdSpaceId { get; set; }
     
-    public required AdSpace AdSpace { get; set; }
+    public  AdSpace? AdSpace { get; set; }
 }

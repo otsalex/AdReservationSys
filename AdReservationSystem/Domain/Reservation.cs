@@ -9,6 +9,7 @@ public class Reservation
     public Guid ReservationId { get; set; }
     
     [Required]
+    [MaxLength(255)]
     public required string CampaignName { get; set; }
     
     [Required]
@@ -20,8 +21,12 @@ public class Reservation
     public DateTime? ApprovalTime { get; set; }
     public DateTime? EndTime { get; set; }
     
-
-    public virtual IdentityUser? User { get; set; }
+    
+    [Required]
+    [ForeignKey("AppUserId")]
+    public Guid AppUserId { get; set; }
+    
+    public AppUser? User { get; set; }
 
     public ICollection<AdSpaceInReservation>? AdSpaceInReservations { get; set; }
     public ICollection<AdDesignInReservation>? AdDesignInReservations { get; set; }

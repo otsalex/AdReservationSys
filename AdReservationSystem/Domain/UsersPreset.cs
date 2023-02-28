@@ -13,8 +13,8 @@ public class UsersPreset
     public Guid PresetId { get; set; }
     public required Preset Preset { get; set; }
     
-    // [Required]
-    // [ForeignKey("UserId")]
-    // public Guid UserId { get; set; }
-    public virtual required IdentityUser User { get; set; }
+    [Required]
+    [ForeignKey("AppUserId")]
+    public Guid AppUserId { get; set; }
+    public virtual AppUser? User { get; set; }
 }

@@ -20,8 +20,8 @@ public class AdSpace
     [ForeignKey("CarrierId")]
     public Guid CarrierId { get; set; }
     
-    public required AdSpaceType AdSpaceType { get; set; }
-    public required Carrier Carrier { get; set; }
+    public  AdSpaceType? AdSpaceType { get; set; }
+    public  Carrier? Carrier { get; set; }
     
     public ICollection<AdSpaceInReservation>? AdSpaceInReservations { get; set; }
     public ICollection<AdSpaceInPreset>? AdSpaceInPresets { get; set; }

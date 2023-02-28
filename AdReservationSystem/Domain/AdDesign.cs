@@ -7,6 +7,7 @@ public class AdDesign
     public Guid AdDesignId { get; set; }
     
     [Required]
+    [MaxLength(255)]
     public required  string Name { get; set; }
     
     public required string RefToImage { get; set; }

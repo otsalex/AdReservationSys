@@ -24,7 +24,7 @@ public class Carrier
     [ForeignKey("CarrierTypeId")]
     public Guid CarrierTypeId { get; set; }
     
-    public required CarrierType CarrierType { get; set; }
+    public CarrierType? CarrierType { get; set; }
     
     public ICollection<CarrierType>? CarrierTypes { get; set; }
 }

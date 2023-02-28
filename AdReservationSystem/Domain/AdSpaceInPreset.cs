@@ -15,6 +15,6 @@ public class AdSpaceInPreset
     [ForeignKey("PresetId")]
     public Guid PresetId { get; set; }
     
-    public required AdSpace AdSpace { get; set; }
-    public required Preset Preset { get; set; }
+    public  AdSpace? AdSpace { get; set; }
+    public  Preset? Preset { get; set; }
 }

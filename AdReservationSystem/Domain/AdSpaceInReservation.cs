@@ -24,7 +24,7 @@ public class AdSpaceInReservation
     public Guid AdSpaceId { get; set; }
     
     
-    public required Reservation Reservation { get; set; }
-    public required AdDesign AdDesign { get; set; }
-    public required AdSpace AdSpace { get; set; }
+    public  Reservation? Reservation { get; set; }
+    public  AdDesign? AdDesign { get; set; }
+    public  AdSpace? AdSpace { get; set; }
 }

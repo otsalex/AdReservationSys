@@ -46,6 +46,7 @@ namespace WebApp.Controllers
         // GET: Reservation/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.AppUsers, "Id", "UserName");
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,CampaignName,State,CreationTime,ApprovalTime,EndTime")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("ReservationId,CampaignName,State,CreationTime,ApprovalTime,EndTime,AppUserId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +64,7 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.AppUsers, "Id", "UserName", reservation.AppUserId);
             return View(reservation);
         }
 

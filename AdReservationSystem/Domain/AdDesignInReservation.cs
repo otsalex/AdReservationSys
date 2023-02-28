@@ -15,6 +15,6 @@ public class AdDesignInReservation
     [ForeignKey("ReservationId")]
     public Guid ReservationId { get; set; }
    
-    public required AdDesign AdDesign { get; set; }
-    public required Reservation Reservation { get; set; }
+    public  AdDesign? AdDesign { get; set; }
+    public  Reservation? Reservation { get; set; }
 }
