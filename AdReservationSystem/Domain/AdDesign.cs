@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Domain;
 
@@ -13,5 +15,6 @@ public class AdDesign
     public required string RefToImage { get; set; }
     
     public ICollection<AdSpaceInReservation>? AdSpaceInReservations { get; set; }
-    public ICollection<AdDesignInReservation>? AdDesignInReservations { get; set; } 
-}
+    public ICollection<AdDesignInReservation>? AdDesignInReservations { get; set; }
+
+}   

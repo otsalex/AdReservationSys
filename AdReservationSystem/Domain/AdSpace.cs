@@ -9,7 +9,7 @@ public class AdSpace
     
     [Required]
     public required string Side { get; set; }
-    [Required]
+    [MaxLength(255)]
     public required string RefToImage { get; set; }
     
     [Required]

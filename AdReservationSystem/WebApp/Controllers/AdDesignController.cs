@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+
+using System.IO;
 
 namespace WebApp.Controllers
 {
@@ -39,9 +36,30 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(adDesign);
         }
+
+        [HttpGet]
+        public ActionResult ViewPdf(string target, string refToImage)
+        {
+            //this is a custom method
+            
+            var filePath = "." + Path.DirectorySeparatorChar + "designs" + Path.DirectorySeparatorChar + refToImage + "." + "pdf";
+            var fileAsBytes = System.IO.File.ReadAllBytes(filePath);
+            
+            Response.Headers.Add("Content-Disposition", $"inline; {refToImage}");
+            
+            // contains two ways for viewing PDF files:
+            
+            //for downloading!
+            //return File(designAsBytes, "application/pdf", refToImage + ".pdf");
+            
+            //for opening the PDF in browser!
+            return File(fileAsBytes, "application/pdf");
+        }
+       
+      
 
         // GET: AdDesign/Create
         public IActionResult Create()
@@ -54,8 +72,29 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdDesignId,Name,RefToImage")] AdDesign adDesign)
+        public async Task<IActionResult> Create([Bind("AdDesignId,Name,RefToImage")] AdDesign adDesign, IFormFile postedFile)
         {
+            //this is a custom method
+            
+            // design RefToImage is not used yet, keeping it in domain in case the filesystem grows more compliacted.
+            if (postedFile != null)
+            {
+                var path = "." + Path.DirectorySeparatorChar + "designs";
+                var fileLoc =  path + Path.DirectorySeparatorChar + adDesign.Name + ".pdf";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (postedFile.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        await postedFile.CopyToAsync(ms);
+                        var fileBytes = ms.ToArray();
+                        await System.IO.File.WriteAllBytesAsync(fileLoc, fileBytes);
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 adDesign.AdDesignId = Guid.NewGuid();
@@ -64,6 +103,31 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(adDesign);
+        }
+        
+        [HttpPost]
+        public ActionResult GetFileFromUser(IFormFile postedFile)
+        {
+            if (postedFile != null)
+            {
+                var path = "." + Path.DirectorySeparatorChar + "designs";
+                var fileLoc =  path + Path.DirectorySeparatorChar + "bbb" + ".pdf";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (postedFile.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        postedFile.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        System.IO.File.WriteAllBytes(fileLoc, fileBytes);
+                    }
+                }
+            }
+
+            return Ok();
         }
 
         // GET: AdDesign/Edit/5
