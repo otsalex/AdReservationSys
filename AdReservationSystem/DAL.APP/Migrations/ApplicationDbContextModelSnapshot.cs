@@ -22,7 +22,7 @@ namespace DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.AdDesign", b =>
+            modelBuilder.Entity("Domain.App.AdDesign", b =>
                 {
                     b.Property<Guid>("AdDesignId")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace DAL.Migrations
                     b.ToTable("AdDesigns");
                 });
 
-            modelBuilder.Entity("Domain.AdDesignInReservation", b =>
+            modelBuilder.Entity("Domain.App.AdDesignInReservation", b =>
                 {
                     b.Property<Guid>("AdDesignInReservationId")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace DAL.Migrations
                     b.ToTable("AdDesignInReservations");
                 });
 
-            modelBuilder.Entity("Domain.AdSpace", b =>
+            modelBuilder.Entity("Domain.App.AdSpace", b =>
                 {
                     b.Property<Guid>("AdSpaceId")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,8 @@ namespace DAL.Migrations
 
                     b.Property<string>("RefToImage")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Side")
                         .IsRequired()
@@ -92,7 +93,7 @@ namespace DAL.Migrations
                     b.ToTable("AdSpaces");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceInPreset", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceInPreset", b =>
                 {
                     b.Property<Guid>("AdSpaceInPresetId")
                         .ValueGeneratedOnAdd()
@@ -113,7 +114,7 @@ namespace DAL.Migrations
                     b.ToTable("AdSpaceInPresets");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceInReservation", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceInReservation", b =>
                 {
                     b.Property<Guid>("AdSpaceInReservationId")
                         .ValueGeneratedOnAdd()
@@ -145,7 +146,7 @@ namespace DAL.Migrations
                     b.ToTable("AdSpaceInReservations");
                 });
 
-            modelBuilder.Entity("Domain.AdSpacePrice", b =>
+            modelBuilder.Entity("Domain.App.AdSpacePrice", b =>
                 {
                     b.Property<Guid>("AdSpacePriceId")
                         .ValueGeneratedOnAdd()
@@ -170,7 +171,7 @@ namespace DAL.Migrations
                     b.ToTable("AdSpacePrices");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceType", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceType", b =>
                 {
                     b.Property<Guid>("AdSpaceTypeId")
                         .ValueGeneratedOnAdd()
@@ -198,7 +199,94 @@ namespace DAL.Migrations
                     b.ToTable("AdSpaceTypes");
                 });
 
-            modelBuilder.Entity("Domain.AppUser", b =>
+            modelBuilder.Entity("Domain.App.Carrier", b =>
+                {
+                    b.Property<Guid>("CarrierId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BusStopName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CarrierTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Direction")
+                        .HasColumnType("text");
+
+                    b.Property<double>("GPSX")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("GPSY")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.HasKey("CarrierId");
+
+                    b.HasIndex("CarrierTypeId");
+
+                    b.ToTable("Carriers");
+                });
+
+            modelBuilder.Entity("Domain.App.CarrierType", b =>
+                {
+                    b.Property<Guid>("CarrierTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CarrierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("CarrierTypeId");
+
+                    b.HasIndex("CarrierId");
+
+                    b.ToTable("CarrierTypes");
+                });
+
+            modelBuilder.Entity("Domain.App.Identity.AppRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.App.Identity.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,67 +351,7 @@ namespace DAL.Migrations
                     b.ToTable("AppUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Carrier", b =>
-                {
-                    b.Property<Guid>("CarrierId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("BusStopName")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CarrierTypeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Direction")
-                        .HasColumnType("text");
-
-                    b.Property<double>("GPSX")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("GPSY")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.HasKey("CarrierId");
-
-                    b.HasIndex("CarrierTypeId");
-
-                    b.ToTable("Carriers");
-                });
-
-            modelBuilder.Entity("Domain.CarrierType", b =>
-                {
-                    b.Property<Guid>("CarrierTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CarrierId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.HasKey("CarrierTypeId");
-
-                    b.HasIndex("CarrierId");
-
-                    b.ToTable("CarrierTypes");
-                });
-
-            modelBuilder.Entity("Domain.Preset", b =>
+            modelBuilder.Entity("Domain.App.Preset", b =>
                 {
                     b.Property<Guid>("PresetId")
                         .ValueGeneratedOnAdd()
@@ -344,7 +372,7 @@ namespace DAL.Migrations
                     b.ToTable("Presets");
                 });
 
-            modelBuilder.Entity("Domain.PresetType", b =>
+            modelBuilder.Entity("Domain.App.PresetType", b =>
                 {
                     b.Property<Guid>("PresetTypeId")
                         .ValueGeneratedOnAdd()
@@ -360,7 +388,7 @@ namespace DAL.Migrations
                     b.ToTable("PresetTypes");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
+            modelBuilder.Entity("Domain.App.Reservation", b =>
                 {
                     b.Property<Guid>("ReservationId")
                         .ValueGeneratedOnAdd()
@@ -394,7 +422,7 @@ namespace DAL.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("Domain.UsersPreset", b =>
+            modelBuilder.Entity("Domain.App.UsersPreset", b =>
                 {
                     b.Property<Guid>("UsersPresetId")
                         .ValueGeneratedOnAdd()
@@ -413,33 +441,6 @@ namespace DAL.Migrations
                     b.HasIndex("PresetId");
 
                     b.ToTable("UsersPresets");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -545,15 +546,15 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.AdDesignInReservation", b =>
+            modelBuilder.Entity("Domain.App.AdDesignInReservation", b =>
                 {
-                    b.HasOne("Domain.AdDesign", "AdDesign")
+                    b.HasOne("Domain.App.AdDesign", "AdDesign")
                         .WithMany("AdDesignInReservations")
                         .HasForeignKey("AdDesignId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Reservation", "Reservation")
+                    b.HasOne("Domain.App.Reservation", "Reservation")
                         .WithMany("AdDesignInReservations")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -564,15 +565,15 @@ namespace DAL.Migrations
                     b.Navigation("Reservation");
                 });
 
-            modelBuilder.Entity("Domain.AdSpace", b =>
+            modelBuilder.Entity("Domain.App.AdSpace", b =>
                 {
-                    b.HasOne("Domain.AdSpaceType", "AdSpaceType")
+                    b.HasOne("Domain.App.AdSpaceType", "AdSpaceType")
                         .WithMany("AdSpaces")
                         .HasForeignKey("AdSpaceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Carrier", "Carrier")
+                    b.HasOne("Domain.App.Carrier", "Carrier")
                         .WithMany()
                         .HasForeignKey("CarrierId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -583,15 +584,15 @@ namespace DAL.Migrations
                     b.Navigation("Carrier");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceInPreset", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceInPreset", b =>
                 {
-                    b.HasOne("Domain.AdSpace", "AdSpace")
+                    b.HasOne("Domain.App.AdSpace", "AdSpace")
                         .WithMany("AdSpaceInPresets")
                         .HasForeignKey("AdSpaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Preset", "Preset")
+                    b.HasOne("Domain.App.Preset", "Preset")
                         .WithMany("AdSpaceInPresets")
                         .HasForeignKey("PresetId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -602,21 +603,21 @@ namespace DAL.Migrations
                     b.Navigation("Preset");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceInReservation", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceInReservation", b =>
                 {
-                    b.HasOne("Domain.AdDesign", "AdDesign")
+                    b.HasOne("Domain.App.AdDesign", "AdDesign")
                         .WithMany("AdSpaceInReservations")
                         .HasForeignKey("AdDesignId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.AdSpace", "AdSpace")
+                    b.HasOne("Domain.App.AdSpace", "AdSpace")
                         .WithMany("AdSpaceInReservations")
                         .HasForeignKey("AdSpaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Reservation", "Reservation")
+                    b.HasOne("Domain.App.Reservation", "Reservation")
                         .WithMany("AdSpaceInReservations")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -629,9 +630,9 @@ namespace DAL.Migrations
                     b.Navigation("Reservation");
                 });
 
-            modelBuilder.Entity("Domain.AdSpacePrice", b =>
+            modelBuilder.Entity("Domain.App.AdSpacePrice", b =>
                 {
-                    b.HasOne("Domain.AdSpace", "AdSpace")
+                    b.HasOne("Domain.App.AdSpace", "AdSpace")
                         .WithMany("AdSpacePrices")
                         .HasForeignKey("AdSpaceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -640,9 +641,9 @@ namespace DAL.Migrations
                     b.Navigation("AdSpace");
                 });
 
-            modelBuilder.Entity("Domain.Carrier", b =>
+            modelBuilder.Entity("Domain.App.Carrier", b =>
                 {
-                    b.HasOne("Domain.CarrierType", "CarrierType")
+                    b.HasOne("Domain.App.CarrierType", "CarrierType")
                         .WithMany()
                         .HasForeignKey("CarrierTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -651,16 +652,16 @@ namespace DAL.Migrations
                     b.Navigation("CarrierType");
                 });
 
-            modelBuilder.Entity("Domain.CarrierType", b =>
+            modelBuilder.Entity("Domain.App.CarrierType", b =>
                 {
-                    b.HasOne("Domain.Carrier", null)
+                    b.HasOne("Domain.App.Carrier", null)
                         .WithMany("CarrierTypes")
                         .HasForeignKey("CarrierId");
                 });
 
-            modelBuilder.Entity("Domain.Preset", b =>
+            modelBuilder.Entity("Domain.App.Preset", b =>
                 {
-                    b.HasOne("Domain.PresetType", "PresetType")
+                    b.HasOne("Domain.App.PresetType", "PresetType")
                         .WithMany("Presets")
                         .HasForeignKey("PresetTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -669,9 +670,9 @@ namespace DAL.Migrations
                     b.Navigation("PresetType");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
+            modelBuilder.Entity("Domain.App.Reservation", b =>
                 {
-                    b.HasOne("Domain.AppUser", "User")
+                    b.HasOne("Domain.App.Identity.AppUser", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -680,15 +681,15 @@ namespace DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.UsersPreset", b =>
+            modelBuilder.Entity("Domain.App.UsersPreset", b =>
                 {
-                    b.HasOne("Domain.AppUser", "User")
+                    b.HasOne("Domain.App.Identity.AppUser", "User")
                         .WithMany("UsersPreset")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Preset", "Preset")
+                    b.HasOne("Domain.App.Preset", "Preset")
                         .WithMany("UsersPresets")
                         .HasForeignKey("PresetId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -701,7 +702,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("Domain.App.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -710,7 +711,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.App.Identity.AppUser", null)
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,7 +720,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.App.Identity.AppUser", null)
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -728,13 +729,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("Domain.App.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.App.Identity.AppUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -743,21 +744,21 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.App.Identity.AppUser", null)
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.AdDesign", b =>
+            modelBuilder.Entity("Domain.App.AdDesign", b =>
                 {
                     b.Navigation("AdDesignInReservations");
 
                     b.Navigation("AdSpaceInReservations");
                 });
 
-            modelBuilder.Entity("Domain.AdSpace", b =>
+            modelBuilder.Entity("Domain.App.AdSpace", b =>
                 {
                     b.Navigation("AdSpaceInPresets");
 
@@ -766,12 +767,17 @@ namespace DAL.Migrations
                     b.Navigation("AdSpacePrices");
                 });
 
-            modelBuilder.Entity("Domain.AdSpaceType", b =>
+            modelBuilder.Entity("Domain.App.AdSpaceType", b =>
                 {
                     b.Navigation("AdSpaces");
                 });
 
-            modelBuilder.Entity("Domain.AppUser", b =>
+            modelBuilder.Entity("Domain.App.Carrier", b =>
+                {
+                    b.Navigation("CarrierTypes");
+                });
+
+            modelBuilder.Entity("Domain.App.Identity.AppUser", b =>
                 {
                     b.Navigation("Claims");
 
@@ -786,24 +792,19 @@ namespace DAL.Migrations
                     b.Navigation("UsersPreset");
                 });
 
-            modelBuilder.Entity("Domain.Carrier", b =>
-                {
-                    b.Navigation("CarrierTypes");
-                });
-
-            modelBuilder.Entity("Domain.Preset", b =>
+            modelBuilder.Entity("Domain.App.Preset", b =>
                 {
                     b.Navigation("AdSpaceInPresets");
 
                     b.Navigation("UsersPresets");
                 });
 
-            modelBuilder.Entity("Domain.PresetType", b =>
+            modelBuilder.Entity("Domain.App.PresetType", b =>
                 {
                     b.Navigation("Presets");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
+            modelBuilder.Entity("Domain.App.Reservation", b =>
                 {
                     b.Navigation("AdDesignInReservations");
 

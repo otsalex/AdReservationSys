@@ -1,5 +1,5 @@
 @using Domain
-@model Domain.AdDesign
+@model Domain.App.AdDesign
 
 @{
     ViewData["Title"] = "Details";
@@ -28,7 +28,7 @@
 </div>
 
 <div>
-    @Html.ActionLink("view pdf", "ViewPDF",  new { target = "_blank", refToImage = Model.RefToImage })
+    @Html.ActionLink("view pdf", "ViewPDF",  new { target = "_blank", Name = Model.Name })
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.AdDesignId">Edit</a> |

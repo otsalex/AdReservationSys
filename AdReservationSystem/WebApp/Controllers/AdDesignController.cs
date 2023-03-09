@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using Domain;
+
 
 using System.IO;
+using Domain;
+using Domain.App;
 
 namespace WebApp.Controllers
 {
@@ -41,14 +43,14 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewPdf(string target, string refToImage)
+        public ActionResult ViewPdf(string target, string name)
         {
             //this is a custom method
             
-            var filePath = "." + Path.DirectorySeparatorChar + "designs" + Path.DirectorySeparatorChar + refToImage + "." + "pdf";
+            var filePath = "." + Path.DirectorySeparatorChar + "designs" + Path.DirectorySeparatorChar + name + "." + "pdf";
             var fileAsBytes = System.IO.File.ReadAllBytes(filePath);
             
-            Response.Headers.Add("Content-Disposition", $"inline; {refToImage}");
+            Response.Headers.Add("Content-Disposition", $"inline; {name}");
             
             // contains two ways for viewing PDF files:
             
@@ -76,7 +78,7 @@ namespace WebApp.Controllers
         {
             //this is a custom method
             
-            // design RefToImage is not used yet, keeping it in domain in case the filesystem grows more compliacted.
+            // design RefToImage is not used yet, keeping it in domain in case the filesystem grows more complicated.
             if (postedFile != null)
             {
                 var path = "." + Path.DirectorySeparatorChar + "designs";

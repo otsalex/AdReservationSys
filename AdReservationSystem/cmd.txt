@@ -1,5 +1,5 @@
-﻿dotnet ef migrations add InitialCreate
-dotnet ef database update
+﻿dotnet ef migrations add Initial --project DAL.App --startup-project WebApp --context ApplicationDbContext 
+dotnet ef database update --project DAL.App --startup-project WebApp --context ApplicationDbContext
 Main entities:
 
 dotnet aspnet-codegenerator controller -m AdDesign -name AdDesignController -outDir Controllers -dc ApplicationDbContext -udl --referenceScriptLibraries

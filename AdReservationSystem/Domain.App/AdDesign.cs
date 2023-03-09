@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Contracts;
 
-
-namespace Domain;
+namespace Domain.App;
 
 public class AdDesign
 {
@@ -16,5 +15,5 @@ public class AdDesign
     
     public ICollection<AdSpaceInReservation>? AdSpaceInReservations { get; set; }
     public ICollection<AdDesignInReservation>? AdDesignInReservations { get; set; }
-
+    
 }   

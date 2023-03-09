@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -358,7 +358,7 @@ namespace DAL.Migrations
                 {
                     AdSpaceId = table.Column<Guid>(type: "uuid", nullable: false),
                     Side = table.Column<string>(type: "text", nullable: false),
-                    RefToImage = table.Column<string>(type: "text", nullable: false),
+                    RefToImage = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     AdSpaceTypeId = table.Column<Guid>(type: "uuid", nullable: false),
                     CarrierId = table.Column<Guid>(type: "uuid", nullable: false)
                 },

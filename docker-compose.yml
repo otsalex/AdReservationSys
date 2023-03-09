@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  AdResesrvSys-db:
+    container_name: AdResesrvSys-db
+    image: "postgres:15.2-bullseye"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Hajus1
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      #external:internal
+      - "5445:5432"
+    volumes:
+      - AdResesrvSys-db-postgres-volume:/var/lib/postgresql/data
+
+volumes:
+  AdResesrvSys-db-postgres-volume:
