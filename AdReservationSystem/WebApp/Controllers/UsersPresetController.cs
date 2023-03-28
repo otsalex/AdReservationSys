@@ -37,7 +37,7 @@ namespace WebApp.Controllers
 
             var usersPreset = await _context.UsersPresets
                 .Include(u => u.Preset)
-                .FirstOrDefaultAsync(m => m.UsersPresetId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (usersPreset == null)
             {
                 return NotFound();
@@ -59,11 +59,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsersPresetId,PresetId")] UsersPreset usersPreset)
+        public async Task<IActionResult> Create([Bind("Id,PresetId")] UsersPreset usersPreset)
         {
             if (ModelState.IsValid)
             {
-                usersPreset.UsersPresetId = Guid.NewGuid();
+                usersPreset.Id = Guid.NewGuid();
                 _context.Add(usersPreset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,9 +95,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("UsersPresetId,PresetId")] UsersPreset usersPreset)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PresetId")] UsersPreset usersPreset)
         {
-            if (id != usersPreset.UsersPresetId)
+            if (id != usersPreset.Id)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersPresetExists(usersPreset.UsersPresetId))
+                    if (!UsersPresetExists(usersPreset.Id))
                     {
                         return NotFound();
                     }
@@ -136,7 +136,7 @@ namespace WebApp.Controllers
 
             var usersPreset = await _context.UsersPresets
                 .Include(u => u.Preset)
-                .FirstOrDefaultAsync(m => m.UsersPresetId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (usersPreset == null)
             {
                 return NotFound();
@@ -162,7 +162,7 @@ namespace WebApp.Controllers
 
         private bool UsersPresetExists(Guid id)
         {
-            return _context.UsersPresets.Any(e => e.UsersPresetId == id);
+            return _context.UsersPresets.Any(e => e.Id == id);
         }
     }
 }

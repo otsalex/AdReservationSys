@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DAL.APP\DAL.APP.csproj" />
+      <ProjectReference Include="..\DAL.EF.APP\DAL.EF.APP.csproj" />
       <ProjectReference Include="..\Domain.App\Domain.App.csproj" />
     </ItemGroup>
 

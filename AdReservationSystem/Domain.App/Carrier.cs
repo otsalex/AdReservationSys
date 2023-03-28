@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class Carrier
+public class Carrier : DomainEntityId
 {
-    public Guid CarrierId { get; set; }
-    
     [Required]
     public required string City { get; set; }
     [Required]

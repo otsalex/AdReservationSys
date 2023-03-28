@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             }
 
             var reservation = await _context.Reservations
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -56,11 +56,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,CampaignName,State,CreationTime,ApprovalTime,EndTime,AppUserId")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,CampaignName,State,CreationTime,ApprovalTime,EndTime,AppUserId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                reservation.ReservationId = Guid.NewGuid();
+                reservation.Id = Guid.NewGuid();
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,9 +90,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ReservationId,CampaignName,State,CreationTime,ApprovalTime,EndTime")] Reservation reservation)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CampaignName,State,CreationTime,ApprovalTime,EndTime")] Reservation reservation)
         {
-            if (id != reservation.ReservationId)
+            if (id != reservation.Id)
             {
                 return NotFound();
             }
@@ -106,7 +106,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(reservation.ReservationId))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }
@@ -129,7 +129,7 @@ namespace WebApp.Controllers
             }
 
             var reservation = await _context.Reservations
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -155,7 +155,7 @@ namespace WebApp.Controllers
 
         private bool ReservationExists(Guid id)
         {
-            return _context.Reservations.Any(e => e.ReservationId == id);
+            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }

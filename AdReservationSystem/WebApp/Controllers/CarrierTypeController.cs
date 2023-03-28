@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             }
 
             var carrierType = await _context.CarrierTypes
-                .FirstOrDefaultAsync(m => m.CarrierTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (carrierType == null)
             {
                 return NotFound();
@@ -55,11 +55,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarrierTypeId,Type")] CarrierType carrierType)
+        public async Task<IActionResult> Create([Bind("Id,Type")] CarrierType carrierType)
         {
             if (ModelState.IsValid)
             {
-                carrierType.CarrierTypeId = Guid.NewGuid();
+                carrierType.Id = Guid.NewGuid();
                 _context.Add(carrierType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,9 +88,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CarrierTypeId,Type")] CarrierType carrierType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Type")] CarrierType carrierType)
         {
-            if (id != carrierType.CarrierTypeId)
+            if (id != carrierType.Id)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarrierTypeExists(carrierType.CarrierTypeId))
+                    if (!CarrierTypeExists(carrierType.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace WebApp.Controllers
             }
 
             var carrierType = await _context.CarrierTypes
-                .FirstOrDefaultAsync(m => m.CarrierTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (carrierType == null)
             {
                 return NotFound();
@@ -153,7 +153,7 @@ namespace WebApp.Controllers
 
         private bool CarrierTypeExists(Guid id)
         {
-            return _context.CarrierTypes.Any(e => e.CarrierTypeId == id);
+            return _context.CarrierTypes.Any(e => e.Id == id);
         }
     }
 }

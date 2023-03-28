@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Base;
 using Domain.Contracts;
 
 namespace Domain.App;
 
-public class AdDesign
+public class AdDesign : DomainEntityId
 {
-    public Guid AdDesignId { get; set; }
-    
     [Required]
     [MaxLength(255)]
     public required  string Name { get; set; }

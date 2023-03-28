@@ -39,7 +39,7 @@ namespace WebApp.Controllers
                 .Include(a => a.AdDesign)
                 .Include(a => a.AdSpace)
                 .Include(a => a.Reservation)
-                .FirstOrDefaultAsync(m => m.AdSpaceInReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceInReservation == null)
             {
                 return NotFound();
@@ -62,11 +62,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdSpaceInReservationId,StartTime,EndTime,ReservationId,AdDesignId,AdSpaceId")] AdSpaceInReservation adSpaceInReservation)
+        public async Task<IActionResult> Create([Bind("Id,StartTime,EndTime,ReservationId,AdDesignId,AdSpaceId")] AdSpaceInReservation adSpaceInReservation)
         {
             if (ModelState.IsValid)
             {
-                adSpaceInReservation.AdSpaceInReservationId = Guid.NewGuid();
+                adSpaceInReservation.Id = Guid.NewGuid();
                 _context.Add(adSpaceInReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -101,9 +101,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AdSpaceInReservationId,StartTime,EndTime,ReservationId,AdDesignId,AdSpaceId")] AdSpaceInReservation adSpaceInReservation)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,StartTime,EndTime,ReservationId,AdDesignId,AdSpaceId")] AdSpaceInReservation adSpaceInReservation)
         {
-            if (id != adSpaceInReservation.AdSpaceInReservationId)
+            if (id != adSpaceInReservation.Id)
             {
                 return NotFound();
             }
@@ -117,7 +117,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdSpaceInReservationExists(adSpaceInReservation.AdSpaceInReservationId))
+                    if (!AdSpaceInReservationExists(adSpaceInReservation.Id))
                     {
                         return NotFound();
                     }
@@ -146,7 +146,7 @@ namespace WebApp.Controllers
                 .Include(a => a.AdDesign)
                 .Include(a => a.AdSpace)
                 .Include(a => a.Reservation)
-                .FirstOrDefaultAsync(m => m.AdSpaceInReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceInReservation == null)
             {
                 return NotFound();
@@ -172,7 +172,7 @@ namespace WebApp.Controllers
 
         private bool AdSpaceInReservationExists(Guid id)
         {
-            return _context.AdSpaceInReservations.Any(e => e.AdSpaceInReservationId == id);
+            return _context.AdSpaceInReservations.Any(e => e.Id == id);
         }
     }
 }

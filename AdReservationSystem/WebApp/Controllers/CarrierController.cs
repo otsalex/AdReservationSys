@@ -37,7 +37,7 @@ namespace WebApp.Controllers
 
             var carrier = await _context.Carriers
                 .Include(c => c.CarrierType)
-                .FirstOrDefaultAsync(m => m.CarrierId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (carrier == null)
             {
                 return NotFound();
@@ -58,11 +58,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CarrierId,City,Number,GPSX,GPSY,BusStopName,Street,Direction,CarrierTypeId")] Carrier carrier)
+        public async Task<IActionResult> Create([Bind("Id,City,Number,GPSX,GPSY,BusStopName,Street,Direction,CarrierTypeId")] Carrier carrier)
         {
             if (ModelState.IsValid)
             {
-                carrier.CarrierId = Guid.NewGuid();
+                carrier.Id = Guid.NewGuid();
                 _context.Add(carrier);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,9 +93,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CarrierId,City,Number,GPSX,GPSY,BusStopName,Street,Direction,CarrierTypeId")] Carrier carrier)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,City,Number,GPSX,GPSY,BusStopName,Street,Direction,CarrierTypeId")] Carrier carrier)
         {
-            if (id != carrier.CarrierId)
+            if (id != carrier.Id)
             {
                 return NotFound();
             }
@@ -109,7 +109,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarrierExists(carrier.CarrierId))
+                    if (!CarrierExists(carrier.Id))
                     {
                         return NotFound();
                     }
@@ -134,7 +134,7 @@ namespace WebApp.Controllers
 
             var carrier = await _context.Carriers
                 .Include(c => c.CarrierType)
-                .FirstOrDefaultAsync(m => m.CarrierId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (carrier == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace WebApp.Controllers
 
         private bool CarrierExists(Guid id)
         {
-            return _context.Carriers.Any(e => e.CarrierId == id);
+            return _context.Carriers.Any(e => e.Id == id);
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class AdSpacePrice
+public class AdSpacePrice : DomainEntityId
 {
-    public Guid AdSpacePriceId { get; set; }
-    
     [Required]
     public decimal Price { get; set; }
     

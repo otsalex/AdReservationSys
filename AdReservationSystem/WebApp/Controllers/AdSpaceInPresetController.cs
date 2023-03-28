@@ -38,7 +38,7 @@ namespace WebApp.Controllers
             var adSpaceInPreset = await _context.AdSpaceInPresets
                 .Include(a => a.AdSpace)
                 .Include(a => a.Preset)
-                .FirstOrDefaultAsync(m => m.AdSpaceInPresetId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceInPreset == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                adSpaceInPreset.AdSpaceInPresetId = Guid.NewGuid();
+                adSpaceInPreset.Id = Guid.NewGuid();
                 _context.Add(adSpaceInPreset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("AdSpaceInPresetId,AdSpaceId,PresetId")] AdSpaceInPreset adSpaceInPreset)
         {
-            if (id != adSpaceInPreset.AdSpaceInPresetId)
+            if (id != adSpaceInPreset.Id)
             {
                 return NotFound();
             }
@@ -113,7 +113,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdSpaceInPresetExists(adSpaceInPreset.AdSpaceInPresetId))
+                    if (!AdSpaceInPresetExists(adSpaceInPreset.Id))
                     {
                         return NotFound();
                     }
@@ -140,7 +140,7 @@ namespace WebApp.Controllers
             var adSpaceInPreset = await _context.AdSpaceInPresets
                 .Include(a => a.AdSpace)
                 .Include(a => a.Preset)
-                .FirstOrDefaultAsync(m => m.AdSpaceInPresetId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceInPreset == null)
             {
                 return NotFound();
@@ -166,7 +166,7 @@ namespace WebApp.Controllers
 
         private bool AdSpaceInPresetExists(Guid id)
         {
-            return _context.AdSpaceInPresets.Any(e => e.AdSpaceInPresetId == id);
+            return _context.AdSpaceInPresets.Any(e => e.Id == id);
         }
     }
 }

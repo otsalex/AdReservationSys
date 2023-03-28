@@ -1,27 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL;
-
-
-using System.IO;
-using Domain;
+using DAL.Contracts.App;
 using Domain.App;
+using Domain.App.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Controllers
 {
     public class AdDesignController : Controller
     {
-        private readonly ApplicationDbContext _context;
 
-        public AdDesignController(ApplicationDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IAppUOW _uow;
+
+        public AdDesignController(UserManager<AppUser> userManager, IAppUOW uow)
         {
-            _context = context;
+            _userManager = userManager;
+            _uow = uow;
         }
 
         // GET: AdDesign
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AdDesigns.ToListAsync());
+            return View(await _uow.AdDesignRepository.AllAsync());
         }
 
         // GET: AdDesign/Details/5
@@ -32,8 +33,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var adDesign = await _context.AdDesigns
-                .FirstOrDefaultAsync(m => m.AdDesignId == id);
+            var adDesign = await _uow.AdDesignRepository
+                .FindAsync(id.Value);
             if (adDesign == null)
             {
                 return NotFound();
@@ -99,9 +100,8 @@ namespace WebApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                adDesign.AdDesignId = Guid.NewGuid();
-                _context.Add(adDesign);
-                await _context.SaveChangesAsync();
+                adDesign.Id = Guid.NewGuid();
+                _uow.AdDesignRepository.Add(adDesign);
                 return RedirectToAction(nameof(Index));
             }
             return View(adDesign);
@@ -140,7 +140,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var adDesign = await _context.AdDesigns.FindAsync(id);
+            var adDesign = await _uow.AdDesignRepository.FindAsync(id.Value);
             if (adDesign == null)
             {
                 return NotFound();
@@ -155,7 +155,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("AdDesignId,Name,RefToImage")] AdDesign adDesign)
         {
-            if (id != adDesign.AdDesignId)
+            if (id != adDesign.Id)
             {
                 return NotFound();
             }
@@ -164,12 +164,11 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(adDesign);
-                    await _context.SaveChangesAsync();
+                    _uow.AdDesignRepository.Update(adDesign);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdDesignExists(adDesign.AdDesignId))
+                    if (!AdDesignExists(adDesign.Id))
                     {
                         return NotFound();
                     }
@@ -191,8 +190,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var adDesign = await _context.AdDesigns
-                .FirstOrDefaultAsync(m => m.AdDesignId == id);
+            var adDesign = await _uow.AdDesignRepository
+                .FindAsync(id.Value);
             if (adDesign == null)
             {
                 return NotFound();
@@ -206,19 +205,19 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var adDesign = await _context.AdDesigns.FindAsync(id);
+            var adDesign = await _uow.AdDesignRepository.FindAsync(id);
             if (adDesign != null)
             {
-                _context.AdDesigns.Remove(adDesign);
+                _uow.AdDesignRepository.Remove(adDesign);
             }
 
-            await _context.SaveChangesAsync();
+         
             return RedirectToAction(nameof(Index));
         }
 
         private bool AdDesignExists(Guid id)
         {
-            return _context.AdDesigns.Any(e => e.AdDesignId == id);
+            return _uow.AdDesignRepository.AllAsync().Result.Any();
         }
     }
 }

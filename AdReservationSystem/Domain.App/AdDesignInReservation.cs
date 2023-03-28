@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class AdDesignInReservation
+public class AdDesignInReservation : DomainEntityId
 {
-    public Guid AdDesignInReservationId { get; set; }
-    
     [Required]
     [ForeignKey("AdDesignId")]
     public Guid AdDesignId { get; set; }

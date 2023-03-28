@@ -37,7 +37,7 @@ namespace WebApp.Controllers
 
             var adSpacePrice = await _context.AdSpacePrices
                 .Include(a => a.AdSpace)
-                .FirstOrDefaultAsync(m => m.AdSpacePriceId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpacePrice == null)
             {
                 return NotFound();
@@ -58,11 +58,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdSpacePriceId,Price,StartTime,EndTime,AdSpaceId")] AdSpacePrice adSpacePrice)
+        public async Task<IActionResult> Create([Bind("Id,Price,StartTime,EndTime,AdSpaceId")] AdSpacePrice adSpacePrice)
         {
             if (ModelState.IsValid)
             {
-                adSpacePrice.AdSpacePriceId = Guid.NewGuid();
+                adSpacePrice.Id = Guid.NewGuid();
                 _context.Add(adSpacePrice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,9 +93,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AdSpacePriceId,Price,StartTime,EndTime,AdSpaceId")] AdSpacePrice adSpacePrice)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Price,StartTime,EndTime,AdSpaceId")] AdSpacePrice adSpacePrice)
         {
-            if (id != adSpacePrice.AdSpacePriceId)
+            if (id != adSpacePrice.Id)
             {
                 return NotFound();
             }
@@ -109,7 +109,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdSpacePriceExists(adSpacePrice.AdSpacePriceId))
+                    if (!AdSpacePriceExists(adSpacePrice.Id))
                     {
                         return NotFound();
                     }
@@ -134,7 +134,7 @@ namespace WebApp.Controllers
 
             var adSpacePrice = await _context.AdSpacePrices
                 .Include(a => a.AdSpace)
-                .FirstOrDefaultAsync(m => m.AdSpacePriceId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpacePrice == null)
             {
                 return NotFound();
@@ -160,7 +160,7 @@ namespace WebApp.Controllers
 
         private bool AdSpacePriceExists(Guid id)
         {
-            return _context.AdSpacePrices.Any(e => e.AdSpacePriceId == id);
+            return _context.AdSpacePrices.Any(e => e.Id == id);
         }
     }
 }

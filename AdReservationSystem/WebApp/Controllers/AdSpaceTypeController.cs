@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             }
 
             var adSpaceType = await _context.AdSpaceTypes
-                .FirstOrDefaultAsync(m => m.AdSpaceTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceType == null)
             {
                 return NotFound();
@@ -55,11 +55,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdSpaceTypeId,Type,Height,Width,Material,Description")] AdSpaceType adSpaceType)
+        public async Task<IActionResult> Create([Bind("Id,Type,Height,Width,Material,Description")] AdSpaceType adSpaceType)
         {
             if (ModelState.IsValid)
             {
-                adSpaceType.AdSpaceTypeId = Guid.NewGuid();
+                adSpaceType.Id = Guid.NewGuid();
                 _context.Add(adSpaceType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,9 +88,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AdSpaceTypeId,Type,Height,Width,Material,Description")] AdSpaceType adSpaceType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Type,Height,Width,Material,Description")] AdSpaceType adSpaceType)
         {
-            if (id != adSpaceType.AdSpaceTypeId)
+            if (id != adSpaceType.Id)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdSpaceTypeExists(adSpaceType.AdSpaceTypeId))
+                    if (!AdSpaceTypeExists(adSpaceType.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace WebApp.Controllers
             }
 
             var adSpaceType = await _context.AdSpaceTypes
-                .FirstOrDefaultAsync(m => m.AdSpaceTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpaceType == null)
             {
                 return NotFound();
@@ -153,7 +153,7 @@ namespace WebApp.Controllers
 
         private bool AdSpaceTypeExists(Guid id)
         {
-            return _context.AdSpaceTypes.Any(e => e.AdSpaceTypeId == id);
+            return _context.AdSpaceTypes.Any(e => e.Id == id);
         }
     }
 }

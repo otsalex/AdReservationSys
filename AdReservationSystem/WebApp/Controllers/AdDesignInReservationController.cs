@@ -38,7 +38,7 @@ namespace WebApp.Controllers
             var adDesignInReservation = await _context.AdDesignInReservations
                 .Include(a => a.AdDesign)
                 .Include(a => a.Reservation)
-                .FirstOrDefaultAsync(m => m.AdDesignInReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adDesignInReservation == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                adDesignInReservation.AdDesignInReservationId = Guid.NewGuid();
+                adDesignInReservation.Id = Guid.NewGuid();
                 _context.Add(adDesignInReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("AdDesignInReservationId,AdDesignId,ReservationId")] AdDesignInReservation adDesignInReservation)
         {
-            if (id != adDesignInReservation.AdDesignInReservationId)
+            if (id != adDesignInReservation.Id)
             {
                 return NotFound();
             }
@@ -113,7 +113,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdDesignInReservationExists(adDesignInReservation.AdDesignInReservationId))
+                    if (!AdDesignInReservationExists(adDesignInReservation.Id))
                     {
                         return NotFound();
                     }
@@ -140,7 +140,7 @@ namespace WebApp.Controllers
             var adDesignInReservation = await _context.AdDesignInReservations
                 .Include(a => a.AdDesign)
                 .Include(a => a.Reservation)
-                .FirstOrDefaultAsync(m => m.AdDesignInReservationId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adDesignInReservation == null)
             {
                 return NotFound();
@@ -166,7 +166,7 @@ namespace WebApp.Controllers
 
         private bool AdDesignInReservationExists(Guid id)
         {
-            return _context.AdDesignInReservations.Any(e => e.AdDesignInReservationId == id);
+            return _context.AdDesignInReservations.Any(e => e.Id == id);
         }
     }
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230309101455_Initial")]
-    partial class Initial
+    [Migration("20230328142326_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdDesign", b =>
                 {
-                    b.Property<Guid>("AdDesignId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -40,14 +40,14 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("AdDesignId");
+                    b.HasKey("Id");
 
                     b.ToTable("AdDesigns");
                 });
 
             modelBuilder.Entity("Domain.App.AdDesignInReservation", b =>
                 {
-                    b.Property<Guid>("AdDesignInReservationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -57,7 +57,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("ReservationId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("AdDesignInReservationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AdDesignId");
 
@@ -68,7 +68,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdSpace", b =>
                 {
-                    b.Property<Guid>("AdSpaceId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -87,7 +87,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("AdSpaceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AdSpaceTypeId");
 
@@ -98,7 +98,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdSpaceInPreset", b =>
                 {
-                    b.Property<Guid>("AdSpaceInPresetId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -108,7 +108,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("PresetId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("AdSpaceInPresetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AdSpaceId");
 
@@ -119,7 +119,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdSpaceInReservation", b =>
                 {
-                    b.Property<Guid>("AdSpaceInReservationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -129,7 +129,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("AdSpaceId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("ReservationId")
@@ -138,7 +138,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("AdSpaceInReservationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AdDesignId");
 
@@ -151,7 +151,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdSpacePrice", b =>
                 {
-                    b.Property<Guid>("AdSpacePriceId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -167,7 +167,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("AdSpacePriceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AdSpaceId");
 
@@ -176,7 +176,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.AdSpaceType", b =>
                 {
-                    b.Property<Guid>("AdSpaceTypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -197,14 +197,14 @@ namespace DAL.Migrations
                     b.Property<float?>("Width")
                         .HasColumnType("real");
 
-                    b.HasKey("AdSpaceTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("AdSpaceTypes");
                 });
 
             modelBuilder.Entity("Domain.App.Carrier", b =>
                 {
-                    b.Property<Guid>("CarrierId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -234,7 +234,7 @@ namespace DAL.Migrations
                     b.Property<string>("Street")
                         .HasColumnType("text");
 
-                    b.HasKey("CarrierId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CarrierTypeId");
 
@@ -243,7 +243,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.CarrierType", b =>
                 {
-                    b.Property<Guid>("CarrierTypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -255,7 +255,7 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.HasKey("CarrierTypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CarrierId");
 
@@ -356,7 +356,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.Preset", b =>
                 {
-                    b.Property<Guid>("PresetId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -368,7 +368,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("PresetTypeId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("PresetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PresetTypeId");
 
@@ -377,7 +377,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.PresetType", b =>
                 {
-                    b.Property<Guid>("PresetTypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -386,14 +386,14 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.HasKey("PresetTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("PresetTypes");
                 });
 
             modelBuilder.Entity("Domain.App.Reservation", b =>
                 {
-                    b.Property<Guid>("ReservationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -418,7 +418,7 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ReservationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
@@ -427,7 +427,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.App.UsersPreset", b =>
                 {
-                    b.Property<Guid>("UsersPresetId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -437,7 +437,7 @@ namespace DAL.Migrations
                     b.Property<Guid>("PresetId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UsersPresetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 

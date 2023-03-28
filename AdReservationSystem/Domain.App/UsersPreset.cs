@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.App.Identity;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class UsersPreset
+public class UsersPreset : DomainEntityId
 {
-    public Guid UsersPresetId { get; set; }
-    
     [Required]
     [ForeignKey("PresetId")]
     public Guid PresetId { get; set; }
-    public required Preset Preset { get; set; }
+    public Preset? Preset { get; set; }
     
     [Required]
     [ForeignKey("AppUserId")]

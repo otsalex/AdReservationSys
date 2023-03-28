@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using Domain;
 using Domain.App;
 
 namespace WebApp.Controllers
@@ -38,7 +33,7 @@ namespace WebApp.Controllers
             var adSpace = await _context.AdSpaces
                 .Include(a => a.AdSpaceType)
                 .Include(a => a.Carrier)
-                .FirstOrDefaultAsync(m => m.AdSpaceId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpace == null)
             {
                 return NotFound();
@@ -64,7 +59,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                adSpace.AdSpaceId = Guid.NewGuid();
+                adSpace.Id = Guid.NewGuid();
                 _context.Add(adSpace);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,7 +94,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("AdSpaceId,Side,RefToImage,AdSpaceTypeId,CarrierId")] AdSpace adSpace)
         {
-            if (id != adSpace.AdSpaceId)
+            if (id != adSpace.Id)
             {
                 return NotFound();
             }
@@ -113,7 +108,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdSpaceExists(adSpace.AdSpaceId))
+                    if (!AdSpaceExists(adSpace.Id))
                     {
                         return NotFound();
                     }
@@ -140,7 +135,7 @@ namespace WebApp.Controllers
             var adSpace = await _context.AdSpaces
                 .Include(a => a.AdSpaceType)
                 .Include(a => a.Carrier)
-                .FirstOrDefaultAsync(m => m.AdSpaceId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (adSpace == null)
             {
                 return NotFound();
@@ -166,7 +161,7 @@ namespace WebApp.Controllers
 
         private bool AdSpaceExists(Guid id)
         {
-            return _context.AdSpaces.Any(e => e.AdSpaceId == id);
+            return _context.AdSpaces.Any(e => e.Id == id);
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class AdSpaceInReservation
+public class AdSpaceInReservation : DomainEntityId
 {
-    public Guid AdSpaceInReservationId { get; set; }
-
     [Required] 
     public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public DateTime? EndTime { get; set; }
     
     [Required]
     [ForeignKey("ReservationId")]

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class Preset
+public class Preset : DomainEntityId
 {
-    public Guid PresetId { get; set; }
-    
+
     [Required]
     [MaxLength(255)]
     public required string  Name { get; set; }

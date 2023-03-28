@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class AdSpace
+public class AdSpace : DomainEntityId
 {
-    public Guid AdSpaceId { get; set; }
-    
     [Required]
     public required string Side { get; set; }
     [MaxLength(255)]

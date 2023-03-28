@@ -35,7 +35,7 @@ namespace WebApp.Controllers
             }
 
             var presetType = await _context.PresetTypes
-                .FirstOrDefaultAsync(m => m.PresetTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (presetType == null)
             {
                 return NotFound();
@@ -55,11 +55,11 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PresetTypeId,Type")] PresetType presetType)
+        public async Task<IActionResult> Create([Bind("Id,Type")] PresetType presetType)
         {
             if (ModelState.IsValid)
             {
-                presetType.PresetTypeId = Guid.NewGuid();
+                presetType.Id = Guid.NewGuid();
                 _context.Add(presetType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,9 +88,9 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PresetTypeId,Type")] PresetType presetType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Type")] PresetType presetType)
         {
-            if (id != presetType.PresetTypeId)
+            if (id != presetType.Id)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PresetTypeExists(presetType.PresetTypeId))
+                    if (!PresetTypeExists(presetType.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace WebApp.Controllers
             }
 
             var presetType = await _context.PresetTypes
-                .FirstOrDefaultAsync(m => m.PresetTypeId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (presetType == null)
             {
                 return NotFound();
@@ -153,7 +153,7 @@ namespace WebApp.Controllers
 
         private bool PresetTypeExists(Guid id)
         {
-            return _context.PresetTypes.Any(e => e.PresetTypeId == id);
+            return _context.PresetTypes.Any(e => e.Id == id);
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class CarrierType
+public class CarrierType : DomainEntityId
 {
-    public Guid CarrierTypeId { get; set; }
-    
     [Required]
     [MaxLength(255)]
     public required string Type { get; set; }

@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Base;
 
 namespace Domain.App;
 
-public class AdSpaceInPreset
+public class AdSpaceInPreset : DomainEntityId
 {
-    public Guid AdSpaceInPresetId { get; set; }
-    
     [Required]
     [ForeignKey("AdSpaceId")]
     public Guid AdSpaceId { get; set; }

@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.App.Identity;
+using Domain.Base;
+using Domain.Contracts.Base;
 
 namespace Domain.App;
 
-public class Reservation
+public class Reservation : DomainEntityId
 {
-    public Guid ReservationId { get; set; }
-    
     [Required]
     [MaxLength(255)]
     public required string CampaignName { get; set; }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,20 +16,20 @@ namespace DAL.Migrations
                 name: "AdDesigns",
                 columns: table => new
                 {
-                    AdDesignId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     RefToImage = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdDesigns", x => x.AdDesignId);
+                    table.PrimaryKey("PK_AdDesigns", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AdSpaceTypes",
                 columns: table => new
                 {
-                    AdSpaceTypeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Height = table.Column<float>(type: "real", nullable: true),
                     Width = table.Column<float>(type: "real", nullable: true),
@@ -38,7 +38,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdSpaceTypes", x => x.AdSpaceTypeId);
+                    table.PrimaryKey("PK_AdSpaceTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,12 +84,12 @@ namespace DAL.Migrations
                 name: "PresetTypes",
                 columns: table => new
                 {
-                    PresetTypeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PresetTypes", x => x.PresetTypeId);
+                    table.PrimaryKey("PK_PresetTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,7 +157,7 @@ namespace DAL.Migrations
                 name: "Reservations",
                 columns: table => new
                 {
-                    ReservationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CampaignName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     State = table.Column<string>(type: "text", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -167,7 +167,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.ReservationId);
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Reservations_AppUsers_AppUserId",
                         column: x => x.AppUserId,
@@ -225,18 +225,18 @@ namespace DAL.Migrations
                 name: "Presets",
                 columns: table => new
                 {
-                    PresetId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     PresetTypeId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Presets", x => x.PresetId);
+                    table.PrimaryKey("PK_Presets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Presets_PresetTypes_PresetTypeId",
                         column: x => x.PresetTypeId,
                         principalTable: "PresetTypes",
-                        principalColumn: "PresetTypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -244,24 +244,24 @@ namespace DAL.Migrations
                 name: "AdDesignInReservations",
                 columns: table => new
                 {
-                    AdDesignInReservationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AdDesignId = table.Column<Guid>(type: "uuid", nullable: false),
                     ReservationId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdDesignInReservations", x => x.AdDesignInReservationId);
+                    table.PrimaryKey("PK_AdDesignInReservations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AdDesignInReservations_AdDesigns_AdDesignId",
                         column: x => x.AdDesignId,
                         principalTable: "AdDesigns",
-                        principalColumn: "AdDesignId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdDesignInReservations_Reservations_ReservationId",
                         column: x => x.ReservationId,
                         principalTable: "Reservations",
-                        principalColumn: "ReservationId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -269,13 +269,13 @@ namespace DAL.Migrations
                 name: "UsersPresets",
                 columns: table => new
                 {
-                    UsersPresetId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PresetId = table.Column<Guid>(type: "uuid", nullable: false),
                     AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersPresets", x => x.UsersPresetId);
+                    table.PrimaryKey("PK_UsersPresets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UsersPresets_AppUsers_AppUserId",
                         column: x => x.AppUserId,
@@ -286,7 +286,7 @@ namespace DAL.Migrations
                         name: "FK_UsersPresets_Presets_PresetId",
                         column: x => x.PresetId,
                         principalTable: "Presets",
-                        principalColumn: "PresetId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -294,18 +294,18 @@ namespace DAL.Migrations
                 name: "AdSpaceInPresets",
                 columns: table => new
                 {
-                    AdSpaceInPresetId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AdSpaceId = table.Column<Guid>(type: "uuid", nullable: false),
                     PresetId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdSpaceInPresets", x => x.AdSpaceInPresetId);
+                    table.PrimaryKey("PK_AdSpaceInPresets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AdSpaceInPresets_Presets_PresetId",
                         column: x => x.PresetId,
                         principalTable: "Presets",
-                        principalColumn: "PresetId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -313,27 +313,27 @@ namespace DAL.Migrations
                 name: "AdSpaceInReservations",
                 columns: table => new
                 {
-                    AdSpaceInReservationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ReservationId = table.Column<Guid>(type: "uuid", nullable: false),
                     AdDesignId = table.Column<Guid>(type: "uuid", nullable: false),
                     AdSpaceId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdSpaceInReservations", x => x.AdSpaceInReservationId);
+                    table.PrimaryKey("PK_AdSpaceInReservations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AdSpaceInReservations_AdDesigns_AdDesignId",
                         column: x => x.AdDesignId,
                         principalTable: "AdDesigns",
-                        principalColumn: "AdDesignId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdSpaceInReservations_Reservations_ReservationId",
                         column: x => x.ReservationId,
                         principalTable: "Reservations",
-                        principalColumn: "ReservationId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -341,7 +341,7 @@ namespace DAL.Migrations
                 name: "AdSpacePrices",
                 columns: table => new
                 {
-                    AdSpacePriceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -349,14 +349,14 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdSpacePrices", x => x.AdSpacePriceId);
+                    table.PrimaryKey("PK_AdSpacePrices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AdSpaces",
                 columns: table => new
                 {
-                    AdSpaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Side = table.Column<string>(type: "text", nullable: false),
                     RefToImage = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     AdSpaceTypeId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -364,12 +364,12 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdSpaces", x => x.AdSpaceId);
+                    table.PrimaryKey("PK_AdSpaces", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AdSpaces_AdSpaceTypes_AdSpaceTypeId",
                         column: x => x.AdSpaceTypeId,
                         principalTable: "AdSpaceTypes",
-                        principalColumn: "AdSpaceTypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -377,7 +377,7 @@ namespace DAL.Migrations
                 name: "Carriers",
                 columns: table => new
                 {
-                    CarrierId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
                     Number = table.Column<string>(type: "text", nullable: false),
                     GPSX = table.Column<double>(type: "double precision", nullable: false),
@@ -389,25 +389,25 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carriers", x => x.CarrierId);
+                    table.PrimaryKey("PK_Carriers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CarrierTypes",
                 columns: table => new
                 {
-                    CarrierTypeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     CarrierId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarrierTypes", x => x.CarrierTypeId);
+                    table.PrimaryKey("PK_CarrierTypes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CarrierTypes_Carriers_CarrierId",
                         column: x => x.CarrierId,
                         principalTable: "Carriers",
-                        principalColumn: "CarrierId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -532,7 +532,7 @@ namespace DAL.Migrations
                 table: "AdSpaceInPresets",
                 column: "AdSpaceId",
                 principalTable: "AdSpaces",
-                principalColumn: "AdSpaceId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -540,7 +540,7 @@ namespace DAL.Migrations
                 table: "AdSpaceInReservations",
                 column: "AdSpaceId",
                 principalTable: "AdSpaces",
-                principalColumn: "AdSpaceId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -548,7 +548,7 @@ namespace DAL.Migrations
                 table: "AdSpacePrices",
                 column: "AdSpaceId",
                 principalTable: "AdSpaces",
-                principalColumn: "AdSpaceId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -556,7 +556,7 @@ namespace DAL.Migrations
                 table: "AdSpaces",
                 column: "CarrierId",
                 principalTable: "Carriers",
-                principalColumn: "CarrierId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -564,7 +564,7 @@ namespace DAL.Migrations
                 table: "Carriers",
                 column: "CarrierTypeId",
                 principalTable: "CarrierTypes",
-                principalColumn: "CarrierTypeId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 

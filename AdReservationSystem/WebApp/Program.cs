@@ -1,6 +1,7 @@
 using DAL;
+using DAL.Contracts.App;
 using DAL.Seeding;
-using Domain;
+
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,9 @@ var connectionString = builder.Configuration.GetConnectionString("ResevationSysD
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+// register our UOW with scoped lifecycle
+builder.Services.AddScoped<IAppUOW, AppUOW>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
@@ -23,6 +27,17 @@ builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.Require
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -71,10 +86,11 @@ static void SetupAppData(IApplicationBuilder app, IWebHostEnvironment environmen
         throw new ApplicationException("Problem in services. Can't initialize DB context.");
     }
 
-    using var UserManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
-    using var RoleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
-    if (UserManager == null || RoleManager == null)
+    using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
+    using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
+    if (userManager == null || roleManager == null)
     {
+        throw new ApplicationException("Problem in services. Can't initialize UserManager or RoleManager");
     }
 
     var logger = serviceScope.ServiceProvider.GetService<ILogger<IApplicationBuilder>>();
@@ -105,7 +121,7 @@ static void SetupAppData(IApplicationBuilder app, IWebHostEnvironment environmen
     if (configuration.GetValue<bool>("DataInit:SeedIdentity"))
     {
         logger.LogInformation("Seeding identity");
-        AppDataInit.SeedIdentity();
+        AppDataInit.SeedIdentity(userManager, roleManager);
     }
     // seed application data
     if (configuration.GetValue<bool>("DataInit:SeedData"))
