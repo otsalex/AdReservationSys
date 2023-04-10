@@ -1,6 +1,5 @@
 ﻿using System.Xml.Serialization;
 using DAL.Contacts.App;
-using DAL.Contracts.App;
 using DAL.EF.Base;
 using DAL.Repositories;
 

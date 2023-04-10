@@ -1,4 +1,4 @@
-﻿using Domain.Contracts.Base;
+﻿using Domain.Contracts;
 
 namespace DAL.Contracts.Base;
 

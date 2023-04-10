@@ -1,5 +1,5 @@
-﻿using Domain.Contracts;
-using Domain.Contracts.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Contracts;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.App.Identity;
@@ -7,6 +7,11 @@ namespace Domain.App.Identity;
 public class AppUser : IdentityUser<Guid>, IDomainEntityId
 {
     public override Guid Id { get; set; }
+    [MaxLength(128)]
+    public string FirstName { get; set; } = default!;
+
+    [MaxLength(128)]
+    public string LastName { get; set; } = default!;
     
     public virtual ICollection<Reservation>? Reservations { get; set; }
 
@@ -15,4 +20,6 @@ public class AppUser : IdentityUser<Guid>, IDomainEntityId
     public virtual ICollection<IdentityUserLogin<Guid>>? Logins { get; set; }
     public virtual ICollection<IdentityUserToken<Guid>>? Tokens { get; set; }
     public virtual ICollection<IdentityUserRole<Guid>>? UserRoles { get; set; }
+    
+    public virtual ICollection<AppRefreshToken>? AppRefreshTokens { get; set; }
 }

@@ -11,11 +11,34 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     {
     }
 
-    public override async Task<IEnumerable<Reservation?>> AllAsync()
+    public override async Task<IEnumerable< Reservation>> AllAsync()
     {
         return await RepositoryDbSet
-            .Include(e => e!.CampaignName)
-            .OrderBy(e => e!.State)
+            .Include(e => e.User)
+            .OrderBy(e => e.CampaignName)
             .ToListAsync();
+    }
+    
+    public virtual async Task<IEnumerable< Reservation>> AllAsync(Guid userId)
+    {
+        return await RepositoryDbSet
+            //.Include(e => e.AppUser)
+            .OrderBy(e => e.CampaignName)
+            .Where(t => t.AppUserId == userId)
+            .ToListAsync();
+    }
+
+    public override async Task< Reservation?> FindAsync(Guid id)
+    {
+        return await RepositoryDbSet
+            .Include(t => t.User)
+            .FirstOrDefaultAsync(m => m.Id == id);
+    }
+
+    public virtual async Task< Reservation?> FindAsync(Guid id, Guid userId)
+    {
+        return await RepositoryDbSet
+            .Include(t => t.User)
+            .FirstOrDefaultAsync(m => m.Id == id && m.AppUserId == userId);
     }
 }

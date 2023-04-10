@@ -1,4 +1,4 @@
-﻿namespace Domain.Contracts.Base;
+﻿namespace Domain.Contracts;
 
 public interface IDomainEntityId<TKey> 
     where TKey : struct, IEquatable<TKey>

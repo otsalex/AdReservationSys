@@ -62,6 +62,8 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 .IsRequired();
         });
     }
+
+    public DbSet<AppRefreshToken> AppRefreshTokens { get; set; } = default!;
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<AdDesign> AdDesigns { get; set; }
     public DbSet<AdDesignInReservation> AdDesignInReservations { get; set; }

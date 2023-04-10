@@ -1,7 +1,6 @@
-﻿using DAL.Contacts.App;
-using DAL.Contracts.Base;
+﻿using DAL.Contracts.Base;
 
-namespace DAL.Contracts.App;
+namespace DAL.Contacts.App;
 
 public interface IAppUOW : IBaseUOW
 {

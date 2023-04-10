@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.App.Identity;
 using Domain.Base;
-using Domain.Contracts.Base;
 
 namespace Domain.App;
 

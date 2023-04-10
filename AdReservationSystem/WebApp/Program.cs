@@ -1,10 +1,13 @@
+using System.Text;
 using DAL;
-using DAL.Contracts.App;
+using DAL.Contacts.App;
 using DAL.Seeding;
 
 using Domain.App.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,28 @@ builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.Require
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddCookie(options => { options.SlidingExpiration = true; })
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")!,
+            ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience")!,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JWT:Key")!)),
+            ClockSkew = TimeSpan.Zero,
+        };
+    });
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Default Password settings.
@@ -38,11 +63,22 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 0;
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsAllowAll", policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+});
 
 builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
+
+
 
 // setup database stuff
 SetupAppData(app, app.Environment, app.Configuration);
@@ -66,6 +102,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+
+app.UseCors("CorsAllowAll");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

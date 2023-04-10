@@ -1,5 +1,5 @@
 ﻿using DAL.Contracts.Base;
-using Domain.Contracts.Base;
+using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF.Base;

@@ -1,6 +1,6 @@
+using DAL.Contacts.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.Contracts.App;
 using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
