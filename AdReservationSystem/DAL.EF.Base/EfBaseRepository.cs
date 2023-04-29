@@ -19,7 +19,7 @@ public class EfBaseRepository<TEntity, TKey, TDbContext> : IBaseRepository<TEnti
     where TDbContext: DbContext
 {
     protected TDbContext RepositoryDbContext;
-    protected DbSet<TEntity?> RepositoryDbSet;
+    protected DbSet<TEntity> RepositoryDbSet;
 
     public EfBaseRepository(TDbContext dataContext){
         RepositoryDbContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));

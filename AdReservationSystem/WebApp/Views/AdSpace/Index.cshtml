@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.RefToImage)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AdSpaceType.Type)
+                @Html.DisplayFor(modelItem => item.AdSpaceType!.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Carrier.City)
+                @Html.DisplayFor(modelItem => item.Carrier!.City)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

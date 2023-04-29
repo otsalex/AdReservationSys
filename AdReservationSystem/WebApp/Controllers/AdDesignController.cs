@@ -164,7 +164,7 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _uow.AdDesignRepository.Update(adDesign);
+                     _uow.AdDesignRepository.Update(adDesign);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -179,6 +179,8 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            await _uow.SaveChangesAsync();
             return View(adDesign);
         }
 
@@ -217,7 +219,7 @@ namespace WebApp.Controllers
 
         private bool AdDesignExists(Guid id)
         {
-            return _uow.AdDesignRepository.AllAsync().Result.Any();
+            return !_uow.AdDesignRepository.FindAsync(id).Equals(null);
         }
     }
 }

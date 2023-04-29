@@ -16,9 +16,13 @@ public class Reservation : DomainEntityId
     
     [Required]
     public DateTime CreationTime { get; set; }
-    
+
+    public string City { get; set; } = default!;
     public DateTime? ApprovalTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime StartDate { get; set; }
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime EndDate { get; set; }
     
     
     [Required]

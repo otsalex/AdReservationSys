@@ -7,4 +7,5 @@ public interface IReservationRepository : IBaseRepository<Reservation>
 {
     public Task<IEnumerable<Reservation>> AllAsync(Guid userId);
     public Task<Reservation?> FindAsync(Guid id, Guid userId);
+    Task<bool> IsOwnedByUserAsync(Guid id, Guid userId);
 }

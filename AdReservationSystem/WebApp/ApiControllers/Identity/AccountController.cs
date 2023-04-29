@@ -1,10 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Mime;
 using System.Security.Claims;
+using Asp.Versioning;
 using DAL;
 using Domain.App.Identity;
 using Helpers.Base;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,12 @@ using Public.DTO.v1.Identity;
 
 namespace WebApp.ApiControllers.Identity;
 
+/// <summary>
+/// API controller for AdSpaces
+/// </summary>
 [ApiController]
-[Route("api/v1/identity/[controller]/[action]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/identity/[controller]/[action]")]
 public class AccountController : ControllerBase
 {
     
@@ -26,6 +31,15 @@ public class AccountController : ControllerBase
     private readonly Random _rnd = new();
     private readonly ApplicationDbContext _context;
 
+    
+    /// <summary>
+    /// Constructs a new AccountController instance
+    /// </summary>
+    /// <param name="signInManager"></param>
+    /// <param name="userManager"></param>
+    /// <param name="configuration"></param>
+    /// <param name="logger"></param>
+    /// <param name="context"></param>
     public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
         IConfiguration configuration, ILogger<AccountController> logger, ApplicationDbContext context)
     {
@@ -36,6 +50,16 @@ public class AccountController : ControllerBase
         _context = context;
     }
     
+    /// <summary>
+    /// Registers new user to the system 
+    /// </summary>
+    /// <param name="registrationData">user info</param>
+    /// <param name="expiresInSeconds">optional, override default value</param>
+    /// <returns>JWTResponse with jwt and refresh token</returns>
+    [HttpPost]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(JWTResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RestApiErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<JWTResponse>> Register([FromBody] Register registrationData,
         [FromQuery]
         int expiresInSeconds)
@@ -118,6 +142,12 @@ public class AccountController : ControllerBase
         };
         return Ok(res);
     }
+    /// <summary>
+    /// Logs the user into the system 
+    /// </summary>
+    /// <param name="loginData">login info</param>
+    /// <param name="expiresInSeconds">optional, override default value</param>
+    /// <returns>JWTResponse with jwt and refresh token</returns>
     [HttpPost]
     public async Task<ActionResult<JWTResponse>> LogIn([FromBody] Login loginData, [FromQuery] int expiresInSeconds)
     {
@@ -213,6 +243,12 @@ public class AccountController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Replaces users jwt with a new one 
+    /// </summary>
+    /// <param name="refreshTokenModel">JWT and refresh token</param>
+    /// <param name="expiresInSeconds">optional, override default value</param>
+    /// <returns>JWTResponse with new jwt and refresh token</returns>
     [HttpPost]
     public async Task<ActionResult> RefreshToken(
         [FromBody]
@@ -351,7 +387,12 @@ public class AccountController : ControllerBase
 
         return Ok(res);
     }
-    
+
+    /// <summary>
+    /// Logs the user out of the system 
+    /// </summary>
+    /// <param name="logout">Refresh token info</param>
+    /// <returns>Delete count</returns>
     [Authorize]
     [HttpPost]
     public async Task<ActionResult> Logout(

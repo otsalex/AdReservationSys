@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Domain.App;
+﻿using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +26,8 @@ public static class AppDataInit
             {
                 Id = userData.id,
                 Email = userData.email,
+                FirstName = "test",
+                LastName = "test",
                 UserName = userData.email,
                 EmailConfirmed = true
             };
@@ -46,12 +47,12 @@ public static class AppDataInit
         SeedAppDataCarrierTypes(context);
         SeedAppDataAdSpaceTypes(context);
         SeedAppDataCarriers(context);
-        SeedAppDataAdSpaces(context);
-        SeedAppDataAdSpaceInReservations(context);
-        SeedAppDataAdSpacePrices(context);
+        // SeedAppDataAdSpaces(context);
+        // SeedAppDataAdSpaceInReservations(context);
+        // SeedAppDataAdSpacePrices(context);
         SeedAppDataPresetTypes(context);
         SeedAppDataPresets(context);
-        SeedAppDataAdSpaceInPresets(context);
+        //SeedAppDataAdSpaceInPresets(context);
         SeedAppDataUsersPresets(context);
         
         
@@ -60,8 +61,6 @@ public static class AppDataInit
 
     private static Guid _designId;
     private static Guid _reservationId;
-    private static Guid _adSpaceId;
-    private static Guid _carrierId;
     private static Guid _carrierTypeId;
     private static Guid _adSpaceTypeId;
     private static Guid _presetId;
@@ -74,7 +73,8 @@ public static class AppDataInit
         {
             CampaignName = "Test Campaign",
             AppUserId = AdminId,
-            State = "pending"
+            State = "pending",
+            City = "Pärnu"
         };
         
         context.Reservations.Add(reservation);
@@ -134,72 +134,83 @@ public static class AppDataInit
         context.AdSpaceTypes.Add(adSpaceType);
         _adSpaceTypeId = adSpaceType.Id;
     }
+    
+    // Seeds carriers with their spaces
     private static void SeedAppDataCarriers(ApplicationDbContext context)
     {
         if (context.Carriers.Any()) return;
+        var carriers = GetListOfCarriers();
 
-        var carrier = new Carrier
+        foreach (var carrier in carriers)
         {
-            Id = Guid.NewGuid(),
-            City = "Pärnu",
-            Number = "B1",
-            GPSX = 58.39216376283948,
-            GPSY = 24.463635198697105,
-            BusStopName = "Vana-Pärnu",
-            Street = "Haapsalu mnt",
-            Direction = "ingoing",
-            CarrierTypeId = _carrierTypeId
-        };
-        
-        context.Carriers.Add(carrier);
-        _carrierId = carrier.Id;
-    }
-    private static void SeedAppDataAdSpaces(ApplicationDbContext context)
-    {
-        if (context.AdSpaces.Any()) return;
-
-        var adSpace = new AdSpace
-        {
-            Id = Guid.NewGuid(),
-            Side = "inner",
-            RefToImage = "",
-            AdSpaceTypeId = _adSpaceTypeId,
-            CarrierId = _carrierId
-        };
-        
-        context.AdSpaces.Add(adSpace);
-        _adSpaceId = adSpace.Id;
-    }
-    private static void SeedAppDataAdSpaceInReservations(ApplicationDbContext context)
-    {
-        if (context.AdSpaceInReservations.Any()) return;
-
-        context.AdSpaceInReservations.Add(new AdSpaceInReservation
+            var adSpaceInner = new AdSpace
             {
                 Id = Guid.NewGuid(),
-                StartTime = DateTime.Now,
-                EndTime = null,
-                ReservationId = _reservationId,
-                AdDesignId = _designId,
-                AdSpaceId = _adSpaceId
-            }
-        );
+                Side = "inner",
+                RefToImage = "",
+                AdSpaceTypeId = _adSpaceTypeId,
+                CarrierId = carrier.Id
+            };
+            var adSpaceOuter = new AdSpace
+            {
+                Id = Guid.NewGuid(),
+                Side = "outer",
+                RefToImage = "",
+                AdSpaceTypeId = _adSpaceTypeId,
+                CarrierId = carrier.Id
+            };
+
+            context.AdSpaces.Add(adSpaceInner);
+            context.AdSpaces.Add(adSpaceOuter);
+            context.Carriers.Add(carrier);
+        }
     }
+    // private static void SeedAppDataAdSpaces(ApplicationDbContext context)
+    // {
+    //     if (context.AdSpaces.Any()) return;
+    //
+    //     var adSpace = new AdSpace
+    //     {
+    //         Id = Guid.NewGuid(),
+    //         Side = "inner",
+    //         RefToImage = "",
+    //         AdSpaceTypeId = _adSpaceTypeId,
+    //         CarrierId = _carrierId
+    //     };
+    //     
+    //     context.AdSpaces.Add(adSpace);
+    //     _adSpaceId = adSpace.Id;
+    // }
+    // private static void SeedAppDataAdSpaceInReservations(ApplicationDbContext context)
+    // {
+    //     if (context.AdSpaceInReservations.Any()) return;
+    //
+    //     context.AdSpaceInReservations.Add(new AdSpaceInReservation
+    //         {
+    //             Id = Guid.NewGuid(),
+    //             StartTime = DateTime.Now,
+    //             EndTime = null,
+    //             ReservationId = _reservationId,
+    //             AdDesignId = _designId,
+    //             AdSpaceId = _adSpaceId
+    //         }
+    //     );
+    // }
     
-    private static void SeedAppDataAdSpacePrices(ApplicationDbContext context)
-    {
-        if (context.AdSpacePrices.Any()) return;
-
-        context.AdSpacePrices.Add(new AdSpacePrice
-            {
-                Id = Guid.NewGuid(),
-                Price = 20,
-                StartTime = DateTime.ParseExact("2023-03-20 14:26", "yyyy-MM-dd HH:mm", CultureInfo.CurrentCulture),
-                EndTime = null,
-                AdSpaceId = _adSpaceId
-            }
-        );
-    }
+    // private static void SeedAppDataAdSpacePrices(ApplicationDbContext context)
+    // {
+    //     if (context.AdSpacePrices.Any()) return;
+    //
+    //     context.AdSpacePrices.Add(new AdSpacePrice
+    //         {
+    //             Id = Guid.NewGuid(),
+    //             Price = 20,
+    //             StartTime = DateTime.ParseExact("2023-03-20 14:26", "yyyy-MM-dd HH:mm", CultureInfo.CurrentCulture),
+    //             EndTime = null,
+    //             AdSpaceId = _adSpaceId
+    //         }
+    //     );
+    // }
     private static void SeedAppDataPresetTypes(ApplicationDbContext context)
     {
         if (context.PresetTypes.Any()) return;
@@ -225,18 +236,18 @@ public static class AppDataInit
         context.Presets.Add(preset);
         _presetId = preset.Id;
     }
-    private static void SeedAppDataAdSpaceInPresets(ApplicationDbContext context)
-    {
-        if (context.AdSpaceInPresets.Any()) return;
-
-        context.AdSpaceInPresets.Add(new AdSpaceInPreset
-            {
-                Id = Guid.NewGuid(),
-                AdSpaceId = _adSpaceId,
-                PresetId = _presetId
-            }
-        );
-    }
+    // private static void SeedAppDataAdSpaceInPresets(ApplicationDbContext context)
+    // {
+    //     if (context.AdSpaceInPresets.Any()) return;
+    //
+    //     context.AdSpaceInPresets.Add(new AdSpaceInPreset
+    //         {
+    //             Id = Guid.NewGuid(),
+    //             AdSpaceId = _adSpaceId,
+    //             PresetId = _presetId
+    //         }
+    //     );
+    // }
     private static void SeedAppDataUsersPresets(ApplicationDbContext context)
     {
         if (context.UsersPresets.Any()) return;
@@ -248,6 +259,76 @@ public static class AppDataInit
                 AppUserId = AdminId
             }
         );
+    }
+
+    private static IEnumerable<Carrier> GetListOfCarriers()
+    {
+        var carriers = new List<Carrier>();
+        
+        carriers.Add(new Carrier
+        {
+            Id = Guid.NewGuid(),
+            City = "Pärnu",
+            Number = "B2",
+            GPSX = 58.39216376283948,
+            GPSY = 24.463635198697105,
+            BusStopName = "Koidula Muuseum",
+            Street = "J. V. Jannseni tänav",
+            Direction = "ingoing",
+            CarrierTypeId = _carrierTypeId
+        });
+
+        carriers.Add(new Carrier
+        {
+            Id = Guid.NewGuid(),
+            City = "Pärnu",
+            Number = "B1",
+            GPSX = 58.39216376283948,
+            GPSY = 24.463635198697105,
+            BusStopName = "Vana-Pärnu",
+            Street = "Haapsalu mnt",
+            Direction = "ingoing",
+            CarrierTypeId = _carrierTypeId
+        });
+            
+        carriers.Add(new Carrier
+        {
+            Id = Guid.NewGuid(),
+            City = "Pärnu",
+            Number = "B3",
+            GPSX = 58.39216376283948,
+            GPSY = 24.463635198697105,
+            BusStopName = "Tallinna mnt I",
+            Street = "Tallinna mnt",
+            Direction = "ingoing",
+            CarrierTypeId = _carrierTypeId
+        });
+        carriers.Add(new Carrier
+        {
+            Id = Guid.NewGuid(),
+            City = "Pärnu",
+            Number = "B4",
+            GPSX = 58.39216376283948,
+            GPSY = 24.463635198697105,
+            BusStopName = "Teater II",
+            Street = "Vee tänav",
+            Direction = "outgoing",
+            CarrierTypeId = _carrierTypeId
+        });
+        carriers.Add(new Carrier
+        {
+            Id = Guid.NewGuid(),
+            City = "Pärnu",
+            Number = "B5",
+            GPSX = 58.39216376283948,
+            GPSY = 24.463635198697105,
+            BusStopName = "Tallinna mnt",
+            Street = "Tallinna mnt",
+            Direction = "outgoing",
+            CarrierTypeId = _carrierTypeId
+        });
+        return carriers;
+
     }
 }
 

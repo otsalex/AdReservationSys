@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Domain.Base;
 
 namespace Domain.App;
@@ -20,9 +21,10 @@ public class AdSpace : DomainEntityId
     public Guid CarrierId { get; set; }
     
     public  AdSpaceType? AdSpaceType { get; set; }
+    //[JsonIgnore]
     public  Carrier? Carrier { get; set; }
     
-    public ICollection<AdSpaceInReservation>? AdSpaceInReservations { get; set; }
-    public ICollection<AdSpaceInPreset>? AdSpaceInPresets { get; set; }
-    public ICollection<AdSpacePrice>? AdSpacePrices { get; set; }
+    public ICollection<AdSpaceInReservation> AdSpaceInReservations { get; set; } = default!;
+    public ICollection<AdSpaceInPreset> AdSpaceInPresets { get; set; } = default!;
+    public ICollection<AdSpacePrice> AdSpacePrices { get; set; } = default!;
 }

@@ -23,7 +23,6 @@ public class Carrier : DomainEntityId
     [ForeignKey("CarrierTypeId")]
     public Guid CarrierTypeId { get; set; }
     
-    public CarrierType? CarrierType { get; set; }
-    
-    public ICollection<CarrierType>? CarrierTypes { get; set; }
+    public CarrierType? CarrierType { get; set; } = default!;
+    public ICollection<AdSpace> AdSpaces { get; set; } = default!;
 }

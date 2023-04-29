@@ -27,19 +27,19 @@
             @Html.DisplayNameFor(model => model.Reservation)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reservation.CampaignName)
+            @Html.DisplayFor(model => model.Reservation!.CampaignName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AdDesign)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdDesign.Name)
+            @Html.DisplayFor(model => model.AdDesign!.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AdSpace)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdSpace.RefToImage)
+            @Html.DisplayFor(model => model.AdSpace!.RefToImage)
         </dd>
     </dl>
     
