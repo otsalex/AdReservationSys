@@ -6,6 +6,7 @@ using Asp.Versioning;
 using DAL;
 using Domain.App.Identity;
 using Helpers.Base;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -238,7 +239,8 @@ public class AccountController : ControllerBase
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
         };
-
+        await _userManager.UpdateAsync(appUser);
+        await _context.SaveChangesAsync();
         return Ok(res);
     }
 
@@ -384,7 +386,8 @@ public class AccountController : ControllerBase
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
         };
-
+        
+        await _userManager.UpdateAsync(appUser);
         return Ok(res);
     }
 

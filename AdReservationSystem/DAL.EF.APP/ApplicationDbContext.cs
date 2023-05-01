@@ -38,28 +38,28 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             b.Property(u => u.NormalizedUserName).HasMaxLength(256);
             b.Property(u => u.Email).HasMaxLength(256);
             b.Property(u => u.NormalizedEmail).HasMaxLength(256);
-            // Each User can have many UserClaims
-            b.HasMany(e => e.Claims)
-                .WithOne()
-                .HasForeignKey(uc => uc.UserId)
-                .IsRequired();
-            // Each User can have many UserLogins
-            b.HasMany(e => e.Logins)
-                .WithOne()
-                .HasForeignKey(ul => ul.UserId)
-                .IsRequired();
-
+            // // Each User can have many UserClaims
+            // b.HasMany(e => e.Claims)
+            //     .WithOne()
+            //     .HasForeignKey(uc => uc.UserId)
+            //     .IsRequired();
+            // // Each User can have many UserLogins
+            // b.HasMany(e => e.Logins)
+            //     .WithOne()
+            //     .HasForeignKey(ul => ul.UserId)
+            //     .IsRequired();
+            //
             // Each User can have many UserTokens
-            b.HasMany(e => e.Tokens)
+            b.HasMany(e => e.AppRefreshTokens)
                 .WithOne()
-                .HasForeignKey(ut => ut.UserId)
+                .HasForeignKey(ut => ut.AppUserId)
                 .IsRequired();
-
-            // Each User can have many entries in the UserRole join table
-            b.HasMany(e => e.UserRoles)
-                .WithOne()
-                .HasForeignKey(ur => ur.UserId)
-                .IsRequired();
+            //
+            // // Each User can have many entries in the UserRole join table
+            // b.HasMany(e => e.UserRoles)
+            //     .WithOne()
+            //     .HasForeignKey(ur => ur.UserId)
+            //     .IsRequired();
         });
     }
 

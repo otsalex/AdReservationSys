@@ -124,7 +124,7 @@ public class ReservationController : ControllerBase
     /// <param name="reservation">Reservation instance</param>
     /// <returns>No content</returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutReservation(Guid id, Reservation reservation)
+    public async Task<ActionResult> PutReservation(Guid id, ReservationWithAdSpaces reservation)
     {
         if (id != reservation.Id)
         {
@@ -135,20 +135,31 @@ public class ReservationController : ControllerBase
             return BadRequest("No hacking (bad user id)!");
         }
 
-        reservation.AppUserId = User.GetUserId();
+        var existingReservation = await _uow.ReservationRepository.FindAsync(id);
+        if (existingReservation == null) return NotFound();
+
+        existingReservation.AppUserId = User.GetUserId();
+        existingReservation.StartDate = reservation.StartDate.Date;
+        existingReservation.EndDate = reservation.EndDate.Date;
+        existingReservation.State = "pending";
+        existingReservation.CampaignName = reservation.CampaignName;
+        existingReservation.City = reservation.City;
+        existingReservation.AdSpaceInReservations = new List<AdSpaceInReservation>();
         
-        //var existingReservation = await _uow.ReservationRepository.FindAsync(id);
-        
-        //reservation.AdSpaceInReservations?.Clear();
-        
-        _uow.ReservationRepository.Update(reservation);
-        
-        //_context.Entry(reservation).State = EntityState.Modified;
+        foreach (var adSpace in reservation.AdSpaces)
+        {
+            existingReservation.AdSpaceInReservations.Add(new AdSpaceInReservation()
+            {
+                AdSpaceId = adSpace.Id,
+                ReservationId = reservation.Id
+            });
+        }
+        _uow.ReservationRepository.Update(existingReservation);
         
         await _uow.SaveChangesAsync();
-        
-        
-        return NoContent();
+
+
+        return CreatedAtAction("GetReservation", existingReservation.Id);
     }
     // POST: api/Reservations
     /// <summary>
@@ -179,10 +190,11 @@ public class ReservationController : ControllerBase
                 ReservationId = reservation.Id
             });
         }
-        _uow.ReservationRepository.Add(res);
+        var saved = _uow.ReservationRepository.Add(res);
 
         await _uow.SaveChangesAsync();
-        return CreatedAtAction("GetReservation", new { id = reservation.Id, reservation });
+        
+        return CreatedAtAction("GetReservation", saved.Id);
     }
     // DELETE: api/Reservations/5
     /// <summary>

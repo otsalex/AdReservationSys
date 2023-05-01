@@ -131,6 +131,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("CorsAllowAll");
+
 app.UseAuthorization();
 
 app.UseSwagger();
@@ -148,7 +150,7 @@ app.UseSwaggerUI(options =>
 );
 
 
-app.UseCors("CorsAllowAll");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
