@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#pragma warning disable 1591
+using System.Reflection;
 using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -70,3 +71,4 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
         
     }
 }
+#pragma warning restore 1591

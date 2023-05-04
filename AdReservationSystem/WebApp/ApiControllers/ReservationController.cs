@@ -22,7 +22,6 @@ public class ReservationController : ControllerBase
 
     private readonly ReservationMapper _reservationMapper;
     private readonly AdSpaceMapper _adSpaceMapper;
-    private readonly CarrierMapper _carrierMapper;
     private readonly IAppUOW _uow;
 
     /// <summary>
@@ -35,7 +34,6 @@ public class ReservationController : ControllerBase
         _uow = uow;
         _reservationMapper = new ReservationMapper(mapper);
         _adSpaceMapper = new AdSpaceMapper(mapper);
-        _carrierMapper = new CarrierMapper(mapper);
     }
 
     // GET: api/Reservations
@@ -53,7 +51,7 @@ public class ReservationController : ControllerBase
         return res!;
     }
     
-    // GET: api/Reservations
+    // GET: api/Reservations/wo
     /// <summary>
     /// Gets all Reservations without AdSpaces
     /// </summary>
@@ -88,10 +86,10 @@ public class ReservationController : ControllerBase
         if (res != null)
         {
             res.AdSpaces = new List<AdSpaceMin>();
-            foreach (var rel in reservation.AdSpaceInReservations)
+            foreach (var rel in reservation.AdSpaceInReservations!)
             {
                 var adSpace = _adSpaceMapper.Map(rel.AdSpace);
-                res.AdSpaces.Add(adSpace);
+                res.AdSpaces.Add(adSpace!);
             }
         }
         return res!;

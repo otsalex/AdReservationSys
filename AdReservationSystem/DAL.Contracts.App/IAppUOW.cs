@@ -18,4 +18,5 @@ public interface IAppUOW : IBaseUOW
     IPresetTypeRepository PresetTypeRepository { get; }
     IReservationRepository ReservationRepository { get; }
     IUsersPresetRepository UsersPresetRepository { get; }
+    IAppUserRepository AppUserRepository { get; }
 }

@@ -6,7 +6,6 @@ using Asp.Versioning;
 using DAL;
 using Domain.App.Identity;
 using Helpers.Base;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,7 @@ using Public.DTO.v1.Identity;
 namespace WebApp.ApiControllers.Identity;
 
 /// <summary>
-/// API controller for AdSpaces
+/// API controller for identity actions
 /// </summary>
 [ApiController]
 [ApiVersion("1.0")]
@@ -85,8 +84,8 @@ public class AccountController : ControllerBase
         {
             Email = registrationData.Email,
             UserName = registrationData.Email,
-            FirstName = registrationData.Firstname,
-            LastName = registrationData.Lastname,
+            FirstName = registrationData.FirstName,
+            LastName = registrationData.LastName,
             AppRefreshTokens = new List<AppRefreshToken>() {refreshToken}
         };
         refreshToken.AppUser = appUser;

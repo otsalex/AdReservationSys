@@ -11,6 +11,6 @@ public class AutomapperConfig : Profile
         CreateMap<Domain.App.Reservation, v1.Reservation>();
         CreateMap<Domain.App.AdSpace, v1.AdSpaceMin>();
         CreateMap<Domain.App.Carrier, v1.CarrierMin>();
-
+        CreateMap<Domain.App.Carrier, v1.CarrierWithAdSpaces>();
     }
 }

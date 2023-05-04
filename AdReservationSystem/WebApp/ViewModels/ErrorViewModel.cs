@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 namespace WebApp.ViewModels;
 
 public class ErrorViewModel
@@ -6,3 +7,4 @@ public class ErrorViewModel
 
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }
+#pragma warning restore 1591

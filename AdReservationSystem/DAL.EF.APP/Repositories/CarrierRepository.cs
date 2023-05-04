@@ -21,6 +21,7 @@ public class CarrierRepository: EfBaseRepository<Carrier, ApplicationDbContext>,
     public override async Task< Carrier?> FindAsync(Guid id)
     {
         return await RepositoryDbSet
+            .Include(r => r.AdSpaces)
             .FirstOrDefaultAsync(m => m.Id == id);
     }
 }

@@ -4,5 +4,6 @@ public class AdSpaceMin{
   
     public Guid Id { get; set; }
     public required string Side { get; set; }
-    public  CarrierMin? Carrier { get; set; }
+    public required string RefToImage { get; set; }
+    public CarrierMin? Carrier { get; set; }
 }

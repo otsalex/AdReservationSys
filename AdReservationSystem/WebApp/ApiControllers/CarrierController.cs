@@ -1,8 +1,10 @@
-﻿using DAL.Contacts.App;
+﻿using AutoMapper;
+using DAL.Contacts.App;
 using Domain.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers;
 
@@ -15,14 +17,17 @@ namespace WebApp.ApiControllers;
 public class CarrierController : ControllerBase
 {
     private readonly IAppUOW _uow;
+    private readonly CarrierMapper _carrierMapper;
 
     /// <summary>
     /// Constructs a new CarrierController instance
     /// </summary>
-    /// <param name="uow"></param>
-    public CarrierController(IAppUOW uow)
+    /// <param name="uow">Unit of work instance for the controller</param>
+    /// <param name="mapper">Data mapper instance for the controller</param>
+    public CarrierController(IAppUOW uow, IMapper mapper)
     {
         _uow = uow;
+        _carrierMapper = new CarrierMapper(mapper);
     }
 
     // GET: api/Carriers
@@ -47,12 +52,12 @@ public class CarrierController : ControllerBase
     public async Task<ActionResult<Carrier>> GetCarrier(Guid id)
     {
         var carrier = await _uow.CarrierRepository.FindAsync(id);
-        
-        if (carrier == null)
-        {
+        if (carrier == null) {
             return NotFound();
         }
-        return Ok(carrier);
+        var res = _carrierMapper.MapWithAdSpaces(carrier);
+        
+        return Ok(res);
     }
     
     

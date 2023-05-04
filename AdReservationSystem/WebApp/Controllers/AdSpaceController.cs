@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -165,3 +166,4 @@ namespace WebApp.Controllers
         }
     }
 }
+#pragma warning restore 1591

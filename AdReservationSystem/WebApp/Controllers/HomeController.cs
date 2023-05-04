@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿#pragma warning disable 1591
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.ViewModels;
 
@@ -29,3 +30,4 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
+#pragma warning restore 1591

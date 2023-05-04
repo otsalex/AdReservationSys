@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿#pragma warning disable 1591
+using AutoMapper;
 using DAL;
 using DAL.Contacts.App;
 using Domain.App;
@@ -65,3 +66,4 @@ public class AdSpaceController : ControllerBase
         return Ok(adSpace);
     }
 }
+#pragma warning restore 1591

@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+#pragma warning disable 1591
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using Domain;
 using Domain.App;
 
 namespace WebApp.Controllers
@@ -170,3 +166,4 @@ namespace WebApp.Controllers
         }
     }
 }
+#pragma warning restore 1591

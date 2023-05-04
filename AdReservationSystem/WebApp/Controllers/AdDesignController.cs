@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 using DAL.Contacts.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -223,3 +224,4 @@ namespace WebApp.Controllers
         }
     }
 }
+#pragma warning restore 1591

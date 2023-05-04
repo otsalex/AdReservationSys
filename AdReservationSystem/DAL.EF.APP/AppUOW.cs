@@ -24,6 +24,7 @@ public class AppUOW : EFBaseUOW<ApplicationDbContext>, IAppUOW
     private IPresetTypeRepository? _presetTypeRepository;
     private IReservationRepository? _reservationRepository;
     private IUsersPresetRepository? _usersPresetRepository;
+    private IAppUserRepository? _appUserRepository;
 
     public IAdDesignInReservationRepository AdDesignInReservationRepository =>
         _adDesignInReservationRepository ??= new AdDesignInReservationRepository(UowDbContext);
@@ -63,4 +64,6 @@ public class AppUOW : EFBaseUOW<ApplicationDbContext>, IAppUOW
 
     public IUsersPresetRepository UsersPresetRepository =>
         _usersPresetRepository ??= new UsersPresetRepository(UowDbContext);
+    public IAppUserRepository AppUserRepository =>
+        _appUserRepository ??= new AppUserRepository(UowDbContext);
 }
