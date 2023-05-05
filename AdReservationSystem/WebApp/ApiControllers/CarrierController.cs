@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using DAL.Contacts.App;
-using Domain.App;
+using BLL.Contracts.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Public.DTO.Mappers;
+using Public.DTO.v1;
 
 namespace WebApp.ApiControllers;
 
@@ -16,17 +16,17 @@ namespace WebApp.ApiControllers;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CarrierController : ControllerBase
 {
-    private readonly IAppUOW _uow;
     private readonly CarrierMapper _carrierMapper;
+    private readonly IAppBLL _bll;
 
     /// <summary>
     /// Constructs a new CarrierController instance
     /// </summary>
-    /// <param name="uow">Unit of work instance for the controller</param>
+    /// <param name="bll">BLL instance for the controller</param>
     /// <param name="mapper">Data mapper instance for the controller</param>
-    public CarrierController(IAppUOW uow, IMapper mapper)
+    public CarrierController(IAppBLL bll, IMapper mapper)
     {
-        _uow = uow;
+        _bll = bll;
         _carrierMapper = new CarrierMapper(mapper);
     }
 
@@ -36,9 +36,9 @@ public class CarrierController : ControllerBase
     /// </summary>
     /// <returns>JWTResponse with jwt and refresh token</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Carrier>>> GetCarriers()
+    public async Task<ActionResult<IEnumerable<Public.DTO.v1.CarrierMin>>> GetCarriers()
     {
-        var carriers = await _uow.CarrierRepository.AllAsync();
+        var carriers = await _bll.CarrierService.AllAsync();
         return Ok(carriers);
     }
     
@@ -49,9 +49,9 @@ public class CarrierController : ControllerBase
     /// <param name="id">Carrier id (Guid)</param>
     /// <returns>Carrier</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Carrier>> GetCarrier(Guid id)
+    public async Task<ActionResult<CarrierWithAdSpaces>> GetCarrier(Guid id)
     {
-        var carrier = await _uow.CarrierRepository.FindAsync(id);
+        var carrier = await _bll.CarrierService.FindAsync(id);
         if (carrier == null) {
             return NotFound();
         }

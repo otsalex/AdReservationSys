@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BLL.DTO\BLL.DTO.csproj" />
-      <ProjectReference Include="..\Domain.App\Domain.App.csproj" />
+      <ProjectReference Include="..\DAL.Contracts.Base\DAL.Contracts.Base.csproj" />
     </ItemGroup>
 
 </Project>

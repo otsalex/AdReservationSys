@@ -1,6 +1,8 @@
 using System.Text;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using BLL.APP;
+using BLL.Contracts.App;
 using DAL;
 using DAL.Contacts.App;
 using DAL.Seeding;
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // register our UOW with scoped lifecycle
 builder.Services.AddScoped<IAppUOW, AppUOW>();
+builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

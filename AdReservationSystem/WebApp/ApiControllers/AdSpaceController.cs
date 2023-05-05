@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 1591
 using AutoMapper;
+using BLL.Contracts.App;
 using DAL;
 using DAL.Contacts.App;
 using Domain.App;
@@ -18,16 +19,16 @@ namespace WebApp.ApiControllers;
 public class AdSpaceController : ControllerBase
 {
     private readonly AdSpaceMapper _adSpaceMapper;
-    private readonly IAppUOW _uow;
-
+    private readonly IAppBLL _bll;
+    
     /// <summary>
     /// Constructor for AdSpaceController
     /// </summary>
     /// <param name="uow"></param>
     /// <param name="mapper"></param>
-    public AdSpaceController(IAppUOW uow, IMapper mapper)
+    public AdSpaceController(IAppBLL bll, IMapper mapper)
     {
-        _uow = uow;
+        _bll = bll;
         _adSpaceMapper = new AdSpaceMapper(mapper);
     }
 
@@ -37,9 +38,9 @@ public class AdSpaceController : ControllerBase
     /// </summary>
     /// <returns>List of all AdSpaces</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AdSpace>>> GetAdSpaces()
+    public async Task<ActionResult<IEnumerable<Public.DTO.v1.AdSpaceMin>>> GetAdSpaces()
     {
-        var adSpaces = await _uow.AdSpaceRepository.AllAsync();
+        var adSpaces = await _bll.AdSpaceService.AllAsync();
         var res = new List<AdSpaceMin>();
         foreach (var adSpace in adSpaces)
         {
@@ -55,9 +56,9 @@ public class AdSpaceController : ControllerBase
     /// <param name="id">AdSpace id (Guid)</param>
     /// <returns>AdSpace</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<AdSpace>> GetAdSpace(Guid id)
+    public async Task<ActionResult<Public.DTO.v1.AdSpaceMin>> GetAdSpace(Guid id)
     {
-        var adSpace = await _uow.AdSpaceRepository.FindAsync(id);
+        var adSpace = await _bll.AdSpaceService.FindAsync(id);
         
         if (adSpace == null)
         {

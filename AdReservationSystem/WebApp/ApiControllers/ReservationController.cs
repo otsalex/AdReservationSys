@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DAL.Contacts.App;
+using BLL.Contracts.App;
 using Domain.App;
 using Helpers.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Public.DTO.Mappers;
 using Public.DTO.v1;
-using Reservation = Domain.App.Reservation;
 
 namespace WebApp.ApiControllers;
 
@@ -22,16 +21,16 @@ public class ReservationController : ControllerBase
 
     private readonly ReservationMapper _reservationMapper;
     private readonly AdSpaceMapper _adSpaceMapper;
-    private readonly IAppUOW _uow;
+    private readonly IAppBLL _bll;
 
     /// <summary>
     /// Constructs a new ReservationController instance
     /// </summary>
-    /// <param name="uow"></param>
-    /// <param name="mapper"></param>
-    public ReservationController(IAppUOW uow, IMapper mapper)
+    /// <param name="bll">BLL instance for the controller</param>
+    /// <param name="mapper">Data mapper instance for the controller</param>
+    public ReservationController(IAppBLL bll, IMapper mapper)
     {
-        _uow = uow;
+        _bll = bll;
         _reservationMapper = new ReservationMapper(mapper);
         _adSpaceMapper = new AdSpaceMapper(mapper);
     }
@@ -44,7 +43,7 @@ public class ReservationController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Public.DTO.v1.ReservationWithAdSpaces>>> GetReservations()
     {
-        var reservations = await _uow.ReservationRepository.AllAsync(User.GetUserId());
+        var reservations = await _bll.ReservationService.AllAsync(User.GetUserId());
         var res = reservations
             .Select(e => _reservationMapper.MapWithAdSpaces(e))
             .ToList();
@@ -59,7 +58,7 @@ public class ReservationController : ControllerBase
     [HttpGet("wo")]
     public async Task<ActionResult<IEnumerable<Public.DTO.v1.ReservationWOAdSpaces>>> GetReservationsWoAdSpaces()
     {
-        var reservations = await _uow.ReservationRepository.AllAsync(User.GetUserId());
+        var reservations = await _bll.ReservationService.AllAsync(User.GetUserId());
         var res = reservations
             .Select(e => _reservationMapper.MapWOAdSpaces(e))
             .ToList();
@@ -75,7 +74,7 @@ public class ReservationController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Public.DTO.v1.ReservationWithAdSpaces>> GetReservation(Guid id)
     {
-        var reservation = await _uow.ReservationRepository.FindAsync(id, User.GetUserId());
+        var reservation = await _bll.ReservationService.FindAsync(id, User.GetUserId());
         
         if (reservation == null)
         {
@@ -83,15 +82,15 @@ public class ReservationController : ControllerBase
         }
 
         var res = _reservationMapper.MapWithAdSpaces(reservation);
-        if (res != null)
-        {
-            res.AdSpaces = new List<AdSpaceMin>();
-            foreach (var rel in reservation.AdSpaceInReservations!)
-            {
-                var adSpace = _adSpaceMapper.Map(rel.AdSpace);
-                res.AdSpaces.Add(adSpace!);
-            }
-        }
+        // if (res != null)
+        // {
+        //     res.AdSpaces = new List<AdSpaceMin>();
+        //     foreach (var rel in reservation.AdSpaceInReservations!)
+        //     {
+        //         AdSpaceMin adSpace = _adSpaceMapper.Map(rel.AdSpace);
+        //         res.AdSpaces.Add(adSpace!);
+        //     }
+        // }
         return res!;
     }
     // GET: api/Reservations/wo/5
@@ -103,7 +102,7 @@ public class ReservationController : ControllerBase
     [HttpGet("{id}/wo")]
     public async Task<ActionResult<Public.DTO.v1.ReservationWOAdSpaces>> GetReservationWoAdSpaces(Guid id)
     {
-        var reservation = await _uow.ReservationRepository.FindAsync(id, User.GetUserId());
+        var reservation = await _bll.ReservationService.FindAsync(id, User.GetUserId());
         
         if (reservation == null)
         {
@@ -128,12 +127,12 @@ public class ReservationController : ControllerBase
         {
             return BadRequest();
         }
-        if (!await _uow.ReservationRepository.IsOwnedByUserAsync(reservation.Id, User.GetUserId()))
+        if (!await _bll.ReservationService.IsOwnedByUserAsync(reservation.Id, User.GetUserId()))
         {
             return BadRequest("No hacking (bad user id)!");
         }
 
-        var existingReservation = await _uow.ReservationRepository.FindAsync(id);
+        var existingReservation = await _bll.ReservationService.FindAsync(id);
         if (existingReservation == null) return NotFound();
 
         existingReservation.AppUserId = User.GetUserId();
@@ -152,9 +151,9 @@ public class ReservationController : ControllerBase
                 ReservationId = reservation.Id
             });
         }
-        _uow.ReservationRepository.Update(existingReservation);
+        _bll.ReservationService.Update(existingReservation);
         
-        await _uow.SaveChangesAsync();
+        await _bll.SaveChangesAsync();
 
 
         return CreatedAtAction("GetReservation", existingReservation.Id);
@@ -166,10 +165,10 @@ public class ReservationController : ControllerBase
     /// <param name="reservation">Reservation instance</param>
     /// <returns>201-created</returns>
     [HttpPost]
-    public async Task<ActionResult<Reservation>> PostReservation([FromBody] ReservationWithAdSpaces reservation)
+    public async Task<ActionResult<BLL.DTO.Reservation>> PostReservation([FromBody] ReservationWithAdSpaces reservation)
     {
 
-        var res = new Reservation
+        var res = new BLL.DTO.Reservation
         {
             AppUserId = User.GetUserId(),
             CreationTime = DateTime.Now,
@@ -188,9 +187,9 @@ public class ReservationController : ControllerBase
                 ReservationId = reservation.Id
             });
         }
-        var saved = _uow.ReservationRepository.Add(res);
+        var saved = _bll.ReservationService.Add(res);
 
-        await _uow.SaveChangesAsync();
+        await _bll.SaveChangesAsync();
         
         return CreatedAtAction("GetReservation", saved.Id);
     }
@@ -203,9 +202,9 @@ public class ReservationController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReservation(Guid id)
     {
-        var reservation = await _uow.ReservationRepository.RemoveAsync(id);
+        var reservation = await _bll.ReservationService.RemoveAsync(id);
         if (reservation == null) return NotFound();
-        await _uow.SaveChangesAsync();
+        await _bll.SaveChangesAsync();
         return NoContent();
     }
 }

@@ -27,6 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BLL.APP\BLL.APP.csproj" />
+      <ProjectReference Include="..\BLL.Contracts.App\BLL.Contracts.App.csproj" />
       <ProjectReference Include="..\DAL.EF.APP\DAL.EF.APP.csproj" />
       <ProjectReference Include="..\Domain.App\Domain.App.csproj" />
       <ProjectReference Include="..\Helpers.Base\Helpers.Base.csproj" />

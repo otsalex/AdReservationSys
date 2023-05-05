@@ -3,9 +3,13 @@ using Domain.App;
 
 namespace DAL.Contacts.App;
 
-public interface IReservationRepository : IBaseRepository<Reservation>
+public interface IReservationRepository : IBaseRepository<Reservation>, IReservationRepositoryCustom<Reservation>
 {
-    public Task<IEnumerable<Reservation>> AllAsync(Guid userId);
-    public Task<Reservation?> FindAsync(Guid id, Guid userId);
+    // add here custom methods for repo only
+}
+public interface IReservationRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> AllAsync(Guid userId);
+    Task<TEntity?> FindAsync(Guid id, Guid userId);
     Task<bool> IsOwnedByUserAsync(Guid id, Guid userId);
 }
