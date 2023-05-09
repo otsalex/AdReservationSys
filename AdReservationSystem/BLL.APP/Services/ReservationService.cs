@@ -36,7 +36,7 @@ public class ReservationService :
         return Mapper.Map(await Uow.ReservationRepository.RemoveAsync(id));
     }
 
-    public async Task<IEnumerable<BLL.DTO.Reservation>> AllAsync(Guid userId)
+    public async Task<IEnumerable<BLL.DTO.Reservation?>> AllAsync(Guid userId)
     {
         return (await Uow.ReservationRepository.AllAsync(userId)).Select(e => Mapper.Map(e));
     }

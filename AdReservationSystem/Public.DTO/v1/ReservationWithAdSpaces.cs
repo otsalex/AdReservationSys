@@ -12,5 +12,5 @@ public class ReservationWithAdSpaces
     public DateTime EndDate { get; set; }
     public DateTime ApprovalTime { get; set; }
 
-    public ICollection<AdSpaceMin> AdSpaces { get; set; } = default!;
+    public ICollection<AdSpaceMin>? AdSpaces { get; set; } = default!;
 }

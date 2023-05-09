@@ -15,7 +15,7 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     public override async Task<IEnumerable<Reservation?>> AllAsync()
     {
         return await RepositoryDbSet
-            //.Include(e => e.User)
+            .AsNoTracking()
             .OrderBy(e => e!.CampaignName)
             .ToListAsync();
     }
@@ -23,7 +23,7 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     public virtual async Task<IEnumerable<Reservation>> AllAsync(Guid userId)
     {
         return await RepositoryDbSet
-            //.Include(e => e.AppUser)
+            .AsNoTracking()
             .OrderBy(e => e!.CampaignName)
             .Where(t => t!.AppUserId == userId)
             .ToListAsync();
@@ -32,6 +32,7 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     public override async Task<Reservation?> FindAsync(Guid id)
     {
         var reservation = await RepositoryDbSet
+            .AsNoTracking()
             .Include(r=> r.AdSpaceInReservations)!
             .ThenInclude(a => a.AdSpace)
             .FirstOrDefaultAsync(m => m!.Id == id);
@@ -41,6 +42,7 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     public virtual async Task<Reservation?> FindAsync(Guid id, Guid userId)
     {
         return await RepositoryDbSet
+            .AsNoTracking()
             .Include(t => t.AdSpaceInReservations)!
             .ThenInclude(r => r.AdSpace)
             .ThenInclude(s => s!.Carrier)

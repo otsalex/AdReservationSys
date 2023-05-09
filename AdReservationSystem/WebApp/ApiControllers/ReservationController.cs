@@ -179,14 +179,18 @@ public class ReservationController : ControllerBase
             City = reservation.City,
             AdSpaceInReservations = new List<AdSpaceInReservation>()
         };
-        foreach (var adSpace in reservation.AdSpaces)
+        if (reservation.AdSpaces != null)
         {
-            res.AdSpaceInReservations.Add(new AdSpaceInReservation()
+            foreach (var adSpace in reservation.AdSpaces)
             {
-                AdSpaceId = adSpace.Id,
-                ReservationId = reservation.Id
-            });
+                res.AdSpaceInReservations.Add(new AdSpaceInReservation()
+                {
+                    AdSpaceId = adSpace.Id,
+                    ReservationId = reservation.Id
+                });
+            }
         }
+        
         var saved = _bll.ReservationService.Add(res);
 
         await _bll.SaveChangesAsync();

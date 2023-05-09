@@ -84,7 +84,8 @@ builder.Services.AddControllersWithViews();
 
 // add automapper configurations
 builder.Services.AddAutoMapper(
-    typeof(Public.DTO.AutomapperConfig)
+    typeof(Public.DTO.AutomapperConfig),
+    typeof(BLL.APP.AutoMapperConfig)
 );
 
 var apiVersioningBuilder = builder.Services.AddApiVersioning(options =>
