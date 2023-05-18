@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  ad_resesrv_sys-app:
+    container_name:   ad_resesrv_sys-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      
+    #external:internal
+    ports:
+      - "8000:80"
+    depends_on:
+      - ad_resesrv_sys-db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=ad_resesrv_sys-db;Port=5432;Database=AdReservSys;Username=postgres;Password=Hajus1
+  ad_resesrv_sys-db:
+    container_name:   ad_resesrv_sys-db
+    image: "postgres:15.2-bullseye"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Hajus1
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+#      #external:internal
+      - "5445:5432"
+    volumes:
+      - AdResesrvSys-db-postgres-volume:/var/lib/postgresql/data
+
+volumes:
+  AdResesrvSys-db-postgres-volume:

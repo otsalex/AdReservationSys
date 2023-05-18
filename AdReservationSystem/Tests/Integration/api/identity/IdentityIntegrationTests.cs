@@ -4,28 +4,23 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using Public.DTO.v1.Identity;
-using Xunit;
-using Xunit.Abstractions;
 
-namespace Tests.Integration.Identity;
+
+namespace Tests.Integration.api.identity;
 
 public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Program>>
 {
     private readonly HttpClient _client;
-    private readonly CustomWebAppFactory<Program> _factory;
-    private readonly ITestOutputHelper _testOutputHelper;
+    
 
     private readonly JsonSerializerOptions camelCaseJsonSerializerOptions = new JsonSerializerOptions()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    public IdentityIntegrationTests(CustomWebAppFactory<Program> factory, ITestOutputHelper testOutputHelper)
+    public IdentityIntegrationTests(CustomWebAppFactory<Program> factory)
     {
-        _factory = factory;
-        _testOutputHelper = testOutputHelper;
         _client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false
@@ -147,7 +142,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         const string password = "Foo.bar1";
         const int expiresInSeconds = 3;
 
-        const string URL = "/api/v1/trainingplans";
+        const string URL = "/api/v1/reservation";
 
         // Arrange
         var jwt = await RegisterNewUser(email, password, firstname, lastname, expiresInSeconds);
@@ -185,7 +180,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         const string password = "Foo.bar1";
         const int expiresInSeconds = 3;
 
-        const string URL = "/api/v1/trainingplans";
+        const string URL = "/api/v1/reservation";
 
         // Arrange
         var jwt = await RegisterNewUser(email, password, firstname, lastname, expiresInSeconds);

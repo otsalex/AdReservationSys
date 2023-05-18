@@ -2,11 +2,6 @@
 using BLL.Contracts.App;
 using Contracts.Base;
 using DAL.Contacts.App;
-using DAL.Contracts.Base;
-using DAL.DTO;
-using Domain.App;
-using Public.DTO.v1;
-using AdSpace = BLL.DTO.AdSpace;
 using Reservation = Domain.App.Reservation;
 
 namespace BLL.App.Services;

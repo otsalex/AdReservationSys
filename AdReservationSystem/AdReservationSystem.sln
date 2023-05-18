@@ -18,10 +18,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.App", "Domain.App\Do
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7295972-AB78-4F77-8969-CDAF1C6A0B05}"
 	ProjectSection(SolutionItems) = preProject
-		..\docker-compose.yml = ..\docker-compose.yml
 		..\README.md = ..\README.md
 		..\.gitignore = ..\.gitignore
 		cmd.txt = cmd.txt
+		Dockerfile = Dockerfile
+		docker-compose.yml = docker-compose.yml
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Contracts.Base", "DAL.Contracts.Base\DAL.Contracts.Base.csproj", "{60756232-CDD7-43E0-BFA7-9869E36AF5D7}"
@@ -51,6 +53,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL.DTO", "BLL.DTO\BLL.DTO.csproj", "{E448E41F-A612-43CC-A7F5-FE29CCF19872}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL.Contracts.App", "BLL.Contracts.App\BLL.Contracts.App.csproj", "{E0B32B4F-A422-4E1B-B320-D707912EB323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0EF225B4-F96F-4901-8D8C-420CA82CA108}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +134,10 @@ Global
 		{E0B32B4F-A422-4E1B-B320-D707912EB323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B32B4F-A422-4E1B-B320-D707912EB323}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B32B4F-A422-4E1B-B320-D707912EB323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF225B4-F96F-4901-8D8C-420CA82CA108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF225B4-F96F-4901-8D8C-420CA82CA108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF225B4-F96F-4901-8D8C-420CA82CA108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF225B4-F96F-4901-8D8C-420CA82CA108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E92CBE9-FDAC-4356-8D91-A7FEDED0BB0B} = {E090642D-FCCD-4912-A258-CD221E109161}
@@ -152,5 +160,6 @@ Global
 		{2CFFED7B-B27A-4AB5-B2D9-E280C4A89647} = {7683A2D7-12F0-4534-8EAA-192015796404}
 		{E448E41F-A612-43CC-A7F5-FE29CCF19872} = {7683A2D7-12F0-4534-8EAA-192015796404}
 		{E0B32B4F-A422-4E1B-B320-D707912EB323} = {C7227443-2AFA-4319-B053-598812CE535F}
+		{0EF225B4-F96F-4901-8D8C-420CA82CA108} = {7683A2D7-12F0-4534-8EAA-192015796404}
 	EndGlobalSection
 EndGlobal
