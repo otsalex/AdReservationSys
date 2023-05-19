@@ -51,7 +51,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
 
         // Assert
         var responseContent = await response.Content.ReadAsStringAsync();
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True( response.IsSuccessStatusCode);
         VerifyJwtContent(responseContent, email, firstname, lastname, DateTime.Now.AddSeconds(2).ToUniversalTime());
     }
 
@@ -91,7 +91,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
 
         var responseContent = await response.Content.ReadAsStringAsync();
         // Assert
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True(response.IsSuccessStatusCode);
 
         VerifyJwtContent(responseContent, email, firstname, lastname,
             DateTime.Now.AddSeconds(expiresInSeconds + 1).ToUniversalTime());
@@ -128,7 +128,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         var responseContent = await response.Content.ReadAsStringAsync();
 
         // Assert
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True(response.IsSuccessStatusCode);
         VerifyJwtContent(responseContent, email, firstname, lastname,
             DateTime.Now.AddSeconds(expiresInSeconds + 1).ToUniversalTime());
     }
@@ -156,7 +156,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         var response = await _client.SendAsync(request);
 
         // Assert
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True( response.IsSuccessStatusCode);
 
         // Arrange
         await Task.Delay((expiresInSeconds + 2) * 1000);
@@ -168,7 +168,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         var response2 = await _client.SendAsync(request2);
 
         // Assert
-        Assert.Equal(false, response2.IsSuccessStatusCode);
+        Assert.False(response2.IsSuccessStatusCode);
     }
 
     [Fact(DisplayName = "POST - JWT renewal")]
@@ -196,7 +196,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         var response = await _client.SendAsync(request);
 
         // Assert
-        Assert.Equal(false, response.IsSuccessStatusCode);
+        Assert.False(response.IsSuccessStatusCode);
 
         // Arrange
         var REFRESH_URL = $"/api/v1/identity/account/refreshtoken?expiresInSeconds={expiresInSeconds}";
@@ -211,7 +211,7 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         var response2 = await _client.PostAsync(REFRESH_URL, data);
         var responseContent2 = await response2.Content.ReadAsStringAsync();
         
-        Assert.Equal(true, response2.IsSuccessStatusCode);
+        Assert.True(response2.IsSuccessStatusCode);
         
         jwtResponse = JsonSerializer.Deserialize<JWTResponse>(responseContent2, camelCaseJsonSerializerOptions);
 
@@ -221,6 +221,6 @@ public class IdentityIntegrationTests : IClassFixture<CustomWebAppFactory<Progra
         // Act
         var response3 = await _client.SendAsync(request3);
         // Assert
-        Assert.Equal(true, response3.IsSuccessStatusCode);
+        Assert.True( response3.IsSuccessStatusCode);
     }
 }

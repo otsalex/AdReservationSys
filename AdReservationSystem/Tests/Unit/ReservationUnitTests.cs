@@ -15,8 +15,7 @@ namespace Tests.Unit;
 public class ReservationUnitTests
 {
    
-    private readonly IReservationService _service;
-    private readonly ApplicationDbContext _ctx;
+    private readonly IReservationService? _service;
     private readonly IMapper _mapper;
     private readonly AppUOW _uow;
 
@@ -29,13 +28,13 @@ public class ReservationUnitTests
 
         // use random guid as db instance id
         optionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());
-        _ctx = new ApplicationDbContext(optionsBuilder.Options);
+        var ctx = new ApplicationDbContext(optionsBuilder.Options);
 
         // reset db
-        _ctx.Database.EnsureDeleted();
-        _ctx.Database.EnsureCreated();
+        ctx.Database.EnsureDeleted();
+        ctx.Database.EnsureCreated();
 
-        _uow = new AppUOW(_ctx);
+        _uow = new AppUOW(ctx);
         // mock mapper
         if (_mapper == null)
         {
@@ -55,19 +54,19 @@ public class ReservationUnitTests
         await SeedDataAsync();
         
         // Act
-        var result = await _service.AllAsync();
+        var result = await _service!.AllAsync();
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count());
-        Assert.Equal("test1", result.First().CampaignName);
+        Assert.Equal("test1", result.First()!.CampaignName);
     }
 
     [Fact(DisplayName = "GET - get reservation by ID")]
     public async Task GetReservationById()
     {
         var reservationId = await SeedDataAsync();
-        var result = await _service.FindAsync(reservationId);
+        var result = await _service!.FindAsync(reservationId);
         
         Assert.NotNull(result);
     }
@@ -75,7 +74,7 @@ public class ReservationUnitTests
     
     private async Task<Guid> SeedDataAsync()
     {
-        var reservation = _service.Add(
+        var reservation = _service!.Add(
             _mapper.Map<Reservation, BLL.DTO.Reservation>(new Reservation()
         {
             CampaignName = "test1",

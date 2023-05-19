@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Security.Claims;
 using Asp.Versioning;
 using DAL;
+using DAL.Contacts.App;
 using Domain.App.Identity;
 using Helpers.Base;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,7 @@ public class AccountController : ControllerBase
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rnd = new();
     private readonly ApplicationDbContext _context;
+    private readonly IAppUOW _uow;
 
     
     /// <summary>
@@ -40,9 +42,11 @@ public class AccountController : ControllerBase
     /// <param name="configuration"></param>
     /// <param name="logger"></param>
     /// <param name="context"></param>
-    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
+    public AccountController(IAppUOW uow, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
         IConfiguration configuration, ILogger<AccountController> logger, ApplicationDbContext context)
     {
+        _uow = uow;
+        
         _signInManager = signInManager;
         _userManager = userManager;
         _configuration = configuration;
@@ -369,7 +373,9 @@ public class AccountController : ControllerBase
 
         // make new refresh token, keep old one still valid for some time
         var refreshToken = appUser.AppRefreshTokens.First();
-        if (refreshToken.RefreshToken == refreshTokenModel.RefreshToken)
+        
+        // previously was refreshToken.RefreshToken == refreshTokenModel.RefreshToken
+        if (refreshToken.PreviousRefreshToken == refreshTokenModel.RefreshToken)
         {
             refreshToken.PreviousRefreshToken = refreshToken.RefreshToken;
             refreshToken.PreviousExpirationDT = DateTime.UtcNow.AddMinutes(1);

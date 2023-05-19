@@ -12,7 +12,7 @@ public interface IBaseRepository<TEntity, in TKey>
     where TKey : struct, IEquatable<TKey>
 {
     // IEnumerable<TEntity> All();
-    Task<IEnumerable<TEntity>> AllAsync();
+    Task<IEnumerable<TEntity?>> AllAsync();
 
     // TEntity Find(TKey id);
     Task<TEntity?> FindAsync(TKey id);

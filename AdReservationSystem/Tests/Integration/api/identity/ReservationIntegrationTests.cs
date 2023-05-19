@@ -71,7 +71,7 @@ public class ReservationIntegrationTests : IClassFixture<CustomWebAppFactory<Pro
         var response = await _client.PostAsync(reservationURL, reservationDataJson);
 
         // Assert
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True(response.IsSuccessStatusCode);
         
     }
 
@@ -86,7 +86,7 @@ public class ReservationIntegrationTests : IClassFixture<CustomWebAppFactory<Pro
         var reservationId = await LoginAndCreateReservation();
         
         // get the reservation from DB
-        var reservationURL = "/api/v1/reservation/" + reservationId.Replace("\"", "");
+        var reservationURL = "/api/v1/reservation/" + reservationId!.Replace("\"", "");
         var request = new HttpRequestMessage(HttpMethod.Get, reservationURL);
         var response = await _client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
@@ -137,7 +137,7 @@ public class ReservationIntegrationTests : IClassFixture<CustomWebAppFactory<Pro
         
         //Act
         // make delete request
-        var reservationURL = "/api/v1/reservation/" + reservationId.Replace("\"", "");
+        var reservationURL = "/api/v1/reservation/" + reservationId!.Replace("\"", "");
         var deleteRequest = new HttpRequestMessage(HttpMethod.Delete, reservationURL);
         var deleteResponse = await _client.SendAsync(deleteRequest);
 
@@ -162,7 +162,7 @@ public class ReservationIntegrationTests : IClassFixture<CustomWebAppFactory<Pro
 
         var responseContent = await response.Content.ReadAsStringAsync();
         // Assert
-        Assert.Equal(true, response.IsSuccessStatusCode);
+        Assert.True(response.IsSuccessStatusCode);
 
         VerifyJwtContent(responseContent, email, firstname, lastname,
             DateTime.Now.AddSeconds(expiresInSeconds + 1).ToUniversalTime());

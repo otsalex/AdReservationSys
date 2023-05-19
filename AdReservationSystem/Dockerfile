@@ -16,6 +16,7 @@ COPY DAL.EF.Base/*.csproj ./DAL.EF.Base/
 COPY Domain.Base/*.csproj ./Domain.Base/
 COPY Helpers.Base/*.csproj ./Helpers.Base/
 
+
 # APP
 COPY BLL.Contracts.App/*.csproj ./BLL.Contracts.App/
 COPY DAL.Contracts.App/*.csproj ./DAL.Contracts.App/
@@ -25,6 +26,7 @@ COPY DAL.DTO/*.csproj ./DAL.DTO/
 COPY DAL.EF.APP/*.csproj ./DAL.EF.APP/
 COPY Domain.App/*.csproj ./Domain.App/
 COPY Public.DTO/*.csproj ./Public.DTO/
+COPY Tests/*.csproj ./Tests/
 COPY WebApp/*.csproj ./WebApp/
 
 RUN dotnet restore
@@ -51,6 +53,7 @@ COPY DAL.DTO/. ./DAL.DTO/
 COPY DAL.EF.APP/. ./DAL.EF.APP/
 COPY Domain.App/. ./Domain.App/
 COPY Public.DTO/. ./Public.DTO/
+COPY Tests/. ./Tests/
 COPY WebApp/. ./WebApp/
 
 WORKDIR /src/WebApp
