@@ -5,5 +5,6 @@ namespace DAL.Contacts.App;
 
 public interface IAdSpaceInReservationRepository : IBaseRepository<AdSpaceInReservation>
 {
-    
+    public Task<bool> RemoveRelationsAsync(Guid reservationId);
+
 }

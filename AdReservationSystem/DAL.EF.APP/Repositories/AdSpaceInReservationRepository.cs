@@ -10,10 +10,16 @@ public class AdSpaceInReservationRepository : EfBaseRepository<AdSpaceInReservat
     public AdSpaceInReservationRepository(ApplicationDbContext dataContext) : base(dataContext)
     {
     }
-    // public async Task<IEnumerable<AdSpaceInReservation?>> AllByReservationAsync(Guid reservationId)
-    // {
-    //     return await RepositoryDbSet
-    //         .Where(a=> a.ReservationId == reservationId)
-    //         .ToListAsync();
-    // }
+    public async Task<bool> RemoveRelationsAsync(Guid reservationId)
+    {
+        var rels = await RepositoryDbSet
+            .Where(a=> a.ReservationId == reservationId)
+            .ToListAsync();
+        foreach (var rel in rels)
+        {
+            RepositoryDbSet.Remove(rel);
+        }
+
+        return true;
+    }
 }

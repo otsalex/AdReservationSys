@@ -5,8 +5,10 @@ using Helpers.Base;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Public.DTO.Mappers;
 using Public.DTO.v1;
+using AdSpace = BLL.DTO.AdSpace;
 
 namespace WebApp.ApiControllers;
 
@@ -22,6 +24,7 @@ public class ReservationController : ControllerBase
     private readonly ReservationMapper _reservationMapper;
     private readonly AdSpaceMapper _adSpaceMapper;
     private readonly IAppBLL _bll;
+    private readonly BLL.APP.Mappers.AdSpaceMapper _adSpaceMapperBLL;
 
     /// <summary>
     /// Constructs a new ReservationController instance
@@ -33,6 +36,7 @@ public class ReservationController : ControllerBase
         _bll = bll;
         _reservationMapper = new ReservationMapper(mapper);
         _adSpaceMapper = new AdSpaceMapper(mapper);
+        _adSpaceMapperBLL = new BLL.APP.Mappers.AdSpaceMapper(mapper);
     }
 
     // GET: api/Reservations
@@ -82,15 +86,17 @@ public class ReservationController : ControllerBase
         }
 
         var res = _reservationMapper.MapWithAdSpaces(reservation);
-        // if (res != null)
-        // {
-        //     res.AdSpaces = new List<AdSpaceMin>();
-        //     foreach (var rel in reservation.AdSpaceInReservations!)
-        //     {
-        //         AdSpaceMin adSpace = _adSpaceMapper.Map(rel.AdSpace);
-        //         res.AdSpaces.Add(adSpace!);
-        //     }
-        // }
+        if (res != null)
+        {
+            res.AdSpaces = new List<AdSpaceMin>();
+            foreach (var rel in reservation.AdSpaceInReservations!)
+            {
+                
+                AdSpaceMin adSpace = _adSpaceMapper.Map(_adSpaceMapperBLL.Map(rel.AdSpace))!;
+                
+                res.AdSpaces.Add(adSpace!);
+            }
+        }
         return res!;
     }
     // GET: api/Reservations/wo/5
@@ -142,6 +148,9 @@ public class ReservationController : ControllerBase
         existingReservation.CampaignName = reservation.CampaignName;
         existingReservation.City = reservation.City;
         existingReservation.AdSpaceInReservations = new List<AdSpaceInReservation>();
+        existingReservation.AdSpaces = new List<AdSpace>();
+        
+        await _bll.Uow.AdSpaceInReservationRepository.RemoveRelationsAsync(existingReservation.Id);
         
         foreach (var adSpace in reservation.AdSpaces)
         {
@@ -206,8 +215,11 @@ public class ReservationController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReservation(Guid id)
     {
-        var reservation = await _bll.ReservationService.RemoveAsync(id);
+        var reservation = await _bll.ReservationService.FindAsync(id);
+        
         if (reservation == null) return NotFound();
+        
+        _bll.ReservationService.Remove(reservation);
         await _bll.SaveChangesAsync();
         return NoContent();
     }

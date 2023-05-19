@@ -2,12 +2,11 @@
 using BLL.APP;
 using BLL.APP.Mappers;
 using BLL.App.Services;
-using Contracts.Base;
+using BLL.Contracts.App;
 using DAL;
-using Domain.App;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
+
+using Reservation = Domain.App.Reservation;
 
 // using OwnersController = WebApp.Api.OwnersController;
 
@@ -15,15 +14,15 @@ namespace Tests.Unit;
 
 public class ReservationUnitTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-    private readonly ReservationService _service;
+   
+    private readonly IReservationService _service;
     private readonly ApplicationDbContext _ctx;
     private readonly IMapper _mapper;
     private readonly AppUOW _uow;
 
-    public ReservationUnitTests(ITestOutputHelper testOutputHelper)
+    public ReservationUnitTests()
     {
-        _testOutputHelper = testOutputHelper;
+        
 
         // set up mock database - inMemory
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -43,17 +42,13 @@ public class ReservationUnitTests
             var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new AutoMapperConfig()); });
             _mapper = mappingConfig.CreateMapper();
 
-
-            // using var logFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            // var logger = logFactory.CreateLogger<ReservationService>();
-
             // SUT
             _service = new ReservationService(_uow, new ReservationMapper(_mapper));
         }
     }
 
     [Fact(DisplayName = "GET - get all Reservations")]
-    public async Task testGetReservations()
+    public async Task TestGetReservations()
     {
         // Arrange
         // Seed the data
@@ -76,23 +71,26 @@ public class ReservationUnitTests
         
         Assert.NotNull(result);
     }
-
+    
     
     private async Task<Guid> SeedDataAsync()
     {
-        var reservation = _service.Add(new Reservation()
+        var reservation = _service.Add(
+            _mapper.Map<Reservation, BLL.DTO.Reservation>(new Reservation()
         {
             CampaignName = "test1",
             State = "pending",
             City = "Pärnu"
-        });
+        }));
         
-        _service.Add(new Reservation()
+        
+        _service.Add(
+            _mapper.Map<Reservation, BLL.DTO.Reservation>(new Reservation()
         {
             CampaignName = "test2",
             State = "pending",
             City = "Tallinn"
-        });
+        }));
         
         await _uow.SaveChangesAsync();
         return reservation.Id;

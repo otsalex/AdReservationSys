@@ -14,14 +14,18 @@ public class CarrierRepository: EfBaseRepository<Carrier, ApplicationDbContext>,
     public override async Task<IEnumerable<Carrier?>> AllAsync()
     {
         return await RepositoryDbSet
+            .AsNoTracking()
             .Include(c => c!.AdSpaces)
+            .AsNoTracking()
             .OrderBy(e => e!.City)
             .ToListAsync();
     }
     public override async Task< Carrier?> FindAsync(Guid id)
     {
         return await RepositoryDbSet
+            .AsNoTracking()
             .Include(r => r.AdSpaces)
+            .AsNoTracking()
             .FirstOrDefaultAsync(m => m.Id == id);
     }
 }

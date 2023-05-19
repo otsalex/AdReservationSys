@@ -2,13 +2,17 @@
 using DAL.Contacts.App;
 using DAL.EF.Base;
 using DAL.Repositories;
+using Domain.App.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DAL;
 
 public class AppUOW : EFBaseUOW<ApplicationDbContext>, IAppUOW
 {
+    public IdentityDbContext<AppUser, AppRole, Guid> _ctx { get; set; }
     public AppUOW(ApplicationDbContext dataContext) : base(dataContext)
     {
+        _ctx = dataContext;
     }
 
     private IAdDesignInReservationRepository? _adDesignInReservationRepository;

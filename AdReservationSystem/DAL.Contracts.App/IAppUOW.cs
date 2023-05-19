@@ -1,9 +1,13 @@
 ﻿using DAL.Contracts.Base;
+using Domain.App.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DAL.Contacts.App;
 
 public interface IAppUOW : IBaseUOW
+
 {
+    public IdentityDbContext<AppUser, AppRole, Guid> _ctx { get; set; }
     // list your repositories here
     IAdDesignInReservationRepository AdDesignInReservationRepository { get; }
     IAdDesignRepository AdDesignRepository { get; }

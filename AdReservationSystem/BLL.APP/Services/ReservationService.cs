@@ -46,15 +46,15 @@ public class ReservationService :
         return Mapper.Map( Uow.ReservationRepository.Add(entity))!;
     }
 
-    public BLL.DTO.Reservation Update(Reservation entity)
-    {
-        return Mapper.Map( Uow.ReservationRepository.Update(entity))!;
-    }
-
-    public BLL.DTO.Reservation Remove(Reservation entity)
-    {
-        return Mapper.Map( Uow.ReservationRepository.Remove(entity))!;
-    }
+    // public BLL.DTO.Reservation Update(Reservation entity)
+    // {
+    //     return Mapper.Map( Uow.ReservationRepository.Update(entity))!;
+    // }
+    //
+    // public BLL.DTO.Reservation Remove(Reservation entity)
+    // {
+    //     return Mapper.Map(Uow.ReservationRepository.Remove(entity))!;
+    // }
 
     public Task<bool> IsOwnedByUserAsync(Guid id, Guid userId)
     {

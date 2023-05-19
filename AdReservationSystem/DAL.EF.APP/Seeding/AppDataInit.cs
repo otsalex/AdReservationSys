@@ -147,7 +147,7 @@ public static class AppDataInit
             {
                 Id = Guid.NewGuid(),
                 Side = "inner",
-                RefToImage = "",
+                RefToImage = "DSC_0012_sfje21",
                 AdSpaceTypeId = _adSpaceTypeId,
                 CarrierId = carrier.Id
             };
@@ -155,7 +155,7 @@ public static class AppDataInit
             {
                 Id = Guid.NewGuid(),
                 Side = "outer",
-                RefToImage = "",
+                RefToImage = "DSC_0002_cgetcn",
                 AdSpaceTypeId = _adSpaceTypeId,
                 CarrierId = carrier.Id
             };

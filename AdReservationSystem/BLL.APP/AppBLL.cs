@@ -12,7 +12,7 @@ namespace BLL.APP;
 
 public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
 {
-    protected IAppUOW Uow;
+    public new IAppUOW Uow { get; set; }
     private readonly AutoMapper.IMapper _mapper;
 
     public AppBLL(IAppUOW uow, IMapper mapper) : base(uow)
@@ -22,6 +22,8 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
     }
 
     private IReservationService? _reservationService;
+    
+
     public IReservationService ReservationService =>
         _reservationService ??= new ReservationService(Uow, new ReservationMapper(_mapper));
     

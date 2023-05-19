@@ -42,7 +42,6 @@ public class ReservationRepository : EfBaseRepository<Reservation, ApplicationDb
     public virtual async Task<Reservation?> FindAsync(Guid id, Guid userId)
     {
         return await RepositoryDbSet
-            .AsNoTracking()
             .Include(t => t.AdSpaceInReservations)!
             .ThenInclude(r => r.AdSpace)
             .ThenInclude(s => s!.Carrier)

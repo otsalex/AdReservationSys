@@ -22,7 +22,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+{
+    options.UseNpgsql(connectionString);
+
+});
 
 // register our UOW with scoped lifecycle
 builder.Services.AddScoped<IAppUOW, AppUOW>();
@@ -30,9 +33,6 @@ builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
-// builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
